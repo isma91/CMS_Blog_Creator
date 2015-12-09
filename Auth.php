@@ -1,10 +1,10 @@
 <?php
+session_start();
 
 include 'Database.php';
 
 class Auth
 {
-
 	public function create ($username, $password, $email)
 	{
 		$bdd = new Database('home');
@@ -19,9 +19,27 @@ class Auth
 
 	}
 
-	public function update ($infos, $password)
+	public function update ($username, $email, $password = null)
 	{
+		$bdd = new Database('home');
 		
+		if (!$this->_updateCheckUsername($username)) {
+			$this->setError('Username already in use');
+			return false;
+		}
+		if (!$this->_updateCheckEmail($email)) {
+			$this->setError('Email already in use');
+			return false;
+		}
+
+		$update = $bdd->getBdd()->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id AND token = :token');
+		$update->bindParam(':name', $username, PDO::PARAM_STR, 16);
+		$update->bindParam(':email', $email, PDO::PARAM_STR, 60);
+		$update->bindParam(':id', $_SESSION['id']);
+		$update->bindParam(':token', $_SESSION['token']);
+		if ($update->execute()) {
+			return true;
+		}
 	}
 
 	public function updatePassword($new, $password)
@@ -64,7 +82,7 @@ class Auth
 
 	public function getError()
 	{
-		return $this->_error();
+		return $this->_error;
 	}
 
 	public function setError($error)
@@ -80,7 +98,11 @@ class Auth
 		$updateToken = $bdd->getBdd()->prepare('UPDATE users SET token = :token WHERE id = :id');
 		$updateToken->bindParam(':token', $token, PDO::PARAM_STR, 60);
 		$updateToken->bindParam(':id', $id);
-		return $updateToken->execute();
+		if ($updateToken->execute()) {
+			$_SESSION['token'] = $token;
+			$_SESSION['id'] = $id;
+			return true;
+		}
 	}
 
 	private function _hashPassword($password)
@@ -91,5 +113,37 @@ class Auth
 	private function _checkPassword($password, $hash)
 	{
 		return password_verify($password, $hash);
+	}
+
+	private function _updateCheckUsername($username)
+	{
+		$bdd = new Database('home');
+
+		$check = $bdd->getBdd()->prepare('SELECT name FROM users WHERE name = :name AND id != :id');
+		$check->bindParam(':name', $username, PDO::PARAM_STR, 16);
+		$check->bindParam(':id', $_SESSION['id']);
+		$check->execute();
+
+		$user = $check->fetch(PDO::FETCH_ASSOC);
+		if ($user)
+			return false;
+
+		return true;
+	}
+
+	private function _updateCheckEmail($email)
+	{
+		$bdd = new Database('home');
+
+		$check = $bdd->getBdd()->prepare('SELECT email FROM users WHERE email = :email AND id != :id');
+		$check->bindParam(':email', $email, PDO::PARAM_STR, 16);
+		$check->bindParam(':id', $_SESSION['id']);
+		$check->execute();
+
+		$user = $check->fetch(PDO::FETCH_ASSOC);
+		if ($user)
+			return false;
+
+		return true;
 	}
 }
