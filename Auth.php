@@ -32,7 +32,7 @@ class Auth
 			return false;
 		}
 
-		$update = $bdd->getBdd()->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id AND token = :token');
+		$update = $bdd->getBdd()->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id AND token = :token AND active = 1');
 		$update->bindParam(':name', $username, PDO::PARAM_STR, 16);
 		$update->bindParam(':email', $email, PDO::PARAM_STR, 60);
 		$update->bindParam(':id', $_SESSION['id']);
@@ -44,19 +44,38 @@ class Auth
 
 	public function updatePassword($new, $password)
 	{
+		$bdd = new Database();
 
+		$password = $this->_hashPassword($new);
+
+		$update = $bdd->getBdd()->prepare('UPDATE users SET password = :password WHERE id = :id AND token = :token AND active = 1');
+		$update->bindParam(':password', $password);
+		$update->bindParam(':id', $_SESSION['id']);
+		$update->bindParam(':token', $_SESSION['token']);
+		if ($update->execute()) {
+			return true;
+		}
+		return false;
 	}
 
 	public function delete ()
 	{
+		$bdd = new Database();
 
+		$delete = $bdd->getBdd()->prepare('UPDATE users SET active = 0 WHERE id = :id AND token = :token AND active = 1');
+		$delete->bindParam(':id', $_SESSION['id']);
+		$delete->bindParam(':token', $_SESSION['token']);
+		if ($delete->execute()) {
+			session_destroy();
+			return true;
+		}
 	}
 
 	public function connection ($login, $password)
 	{
 		$bdd = new Database('home');
 
-		$getUser = $bdd->getBdd()->prepare('SELECT id, password FROM users WHERE name = :login OR email = :login');
+		$getUser = $bdd->getBdd()->prepare('SELECT id, password FROM users WHERE (name = :login OR email = :login) AND active = 1');
 		$getUser->bindParam(':login', $login, PDO::PARAM_STR);
 		$getUser->execute();
 
@@ -119,9 +138,10 @@ class Auth
 	{
 		$bdd = new Database('home');
 
-		$check = $bdd->getBdd()->prepare('SELECT name FROM users WHERE name = :name AND id != :id');
+		$id = (isset($_SESSION['id'])) $_SESSION['id'] : 0;
+		$check = $bdd->getBdd()->prepare('SELECT name FROM users WHERE name = :name AND id != :id AND active = 1');
 		$check->bindParam(':name', $username, PDO::PARAM_STR, 16);
-		$check->bindParam(':id', $_SESSION['id']);
+		$check->bindParam(':id', $id);
 		$check->execute();
 
 		$user = $check->fetch(PDO::FETCH_ASSOC);
@@ -135,9 +155,10 @@ class Auth
 	{
 		$bdd = new Database('home');
 
-		$check = $bdd->getBdd()->prepare('SELECT email FROM users WHERE email = :email AND id != :id');
-		$check->bindParam(':email', $email, PDO::PARAM_STR, 16);
-		$check->bindParam(':id', $_SESSION['id']);
+		$id = (isset($_SESSION['id'])) $_SESSION['id'] : 0;
+		$check = $bdd->getBdd()->prepare('SELECT email FROM users WHERE email = :email AND id != :id AND active = 1');
+		$check->bindParam(':email', $email, PDO::PARAM_STR, 60);
+		$check->bindParam(':id', $id);
 		$check->execute();
 
 		$user = $check->fetch(PDO::FETCH_ASSOC);
