@@ -42,9 +42,9 @@ class Auth
 		}
 	}
 
-	public function updatePassword($new, $password)
+	public function updatePassword($new)
 	{
-		$bdd = new Database();
+		$bdd = new Database('home');
 
 		$password = $this->_hashPassword($new);
 
@@ -60,7 +60,7 @@ class Auth
 
 	public function delete ()
 	{
-		$bdd = new Database();
+		$bdd = new Database('home');
 
 		$delete = $bdd->getBdd()->prepare('UPDATE users SET active = 0 WHERE id = :id AND token = :token AND active = 1');
 		$delete->bindParam(':id', $_SESSION['id']);
@@ -138,7 +138,7 @@ class Auth
 	{
 		$bdd = new Database('home');
 
-		$id = (isset($_SESSION['id'])) $_SESSION['id'] : 0;
+		$id = (isset($_SESSION['id'])) ? $_SESSION['id'] : 0;
 		$check = $bdd->getBdd()->prepare('SELECT name FROM users WHERE name = :name AND id != :id AND active = 1');
 		$check->bindParam(':name', $username, PDO::PARAM_STR, 16);
 		$check->bindParam(':id', $id);
@@ -155,7 +155,7 @@ class Auth
 	{
 		$bdd = new Database('home');
 
-		$id = (isset($_SESSION['id'])) $_SESSION['id'] : 0;
+		$id = (isset($_SESSION['id'])) ? $_SESSION['id'] : 0;
 		$check = $bdd->getBdd()->prepare('SELECT email FROM users WHERE email = :email AND id != :id AND active = 1');
 		$check->bindParam(':email', $email, PDO::PARAM_STR, 60);
 		$check->bindParam(':id', $id);
