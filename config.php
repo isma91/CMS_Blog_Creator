@@ -2,10 +2,10 @@
 return [
 	'databases' => [
 		'home' => [
-			'host' => 'YOUR HOST',
-			'dbname' => 'YOUR DBNAME',
-			'user' => 'YOUR USERNAME',
-			'password' => 'YOUR PASSWORD',
+			'host' => 'localhost',
+			'dbname' => 'blog_creator',
+			'user' => 'root',
+			'password' => '',
 		],
 	],
 ];

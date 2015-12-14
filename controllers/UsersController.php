@@ -1,9 +1,9 @@
 <?php
-session_start();
+namespace controllers;
 
-include 'Database.php';
-
-class Auth
+use models\Database;
+use models\User;
+class UsersController extends User
 {
 	public function create ($username, $password, $email)
 	{
@@ -11,11 +11,25 @@ class Auth
 
 		$password = $this->_hashPassword($password);
 
+		if (!$this->_updateCheckUsername($username)) {
+			$this->setError('Username already in use');
+			return false;
+		}
+		if (!$this->_updateCheckEmail($email)) {
+			$this->setError('Email already in use');
+			return false;
+		}
+
+
 		$create = $bdd->getBdd()->prepare('INSERT INTO users (name, email, password, createdAt) VALUES (:name, :email, :password, NOW())');
-		$create->bindParam(':name', $username, PDO::PARAM_STR, 16);
-		$create->bindParam(':email', $email, PDO::PARAM_STR, 60);
-		$create->bindParam(':password', $password, PDO::PARAM_STR, 255);
-		$create->execute();
+		$create->bindParam(':name', $username, \PDO::PARAM_STR, 16);
+		$create->bindParam(':email', $email, \PDO::PARAM_STR, 60);
+		$create->bindParam(':password', $password, \PDO::PARAM_STR, 255);
+		if ($create->execute()) {
+			$this->setError('Congrats ! You can connect');
+			return true;
+		}
+
 
 	}
 
@@ -33,8 +47,8 @@ class Auth
 		}
 
 		$update = $bdd->getBdd()->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id AND token = :token AND active = 1');
-		$update->bindParam(':name', $username, PDO::PARAM_STR, 16);
-		$update->bindParam(':email', $email, PDO::PARAM_STR, 60);
+		$update->bindParam(':name', $username, \PDO::PARAM_STR, 16);
+		$update->bindParam(':email', $email, \PDO::PARAM_STR, 60);
 		$update->bindParam(':id', $_SESSION['id']);
 		$update->bindParam(':token', $_SESSION['token']);
 		if ($update->execute()) {
@@ -76,10 +90,10 @@ class Auth
 		$bdd = new Database('home');
 
 		$getUser = $bdd->getBdd()->prepare('SELECT id, password FROM users WHERE (name = :login OR email = :login) AND active = 1');
-		$getUser->bindParam(':login', $login, PDO::PARAM_STR);
+		$getUser->bindParam(':login', $login, \PDO::PARAM_STR);
 		$getUser->execute();
 
-		$user = $getUser->fetch(PDO::FETCH_ASSOC);
+		$user = $getUser->fetch(\PDO::FETCH_ASSOC);
 
 		$hash = $user['password'];
 		if (!$hash) {
@@ -97,16 +111,21 @@ class Auth
 		return true;
 	}
 
-	private $_error;
-
-	public function getError()
+	public function test ()
 	{
-		return $this->_error;
-	}
+		$bdd = new Database('home');
 
-	public function setError($error)
-	{
-		$this->_error = $error;
+		$getUser = $bdd->getBdd()->prepare('SELECT id FROM users WHERE id = :id AND token = :token');
+		$getUser->bindParam(':id', $_SESSION['id']);
+		$getUser->bindParam(':token', $_SESSION['token']);
+		$getUser->execute();
+
+		$user = $getUser->fetch(\PDO::FETCH_ASSOC);
+		if ($user) {
+			return true;
+		}
+
+		return false;
 	}
 
 	private function _updateToken($id)
@@ -115,7 +134,7 @@ class Auth
 
 		$token = sha1(time() * rand(1, 555));
 		$updateToken = $bdd->getBdd()->prepare('UPDATE users SET token = :token WHERE id = :id');
-		$updateToken->bindParam(':token', $token, PDO::PARAM_STR, 60);
+		$updateToken->bindParam(':token', $token, \PDO::PARAM_STR, 60);
 		$updateToken->bindParam(':id', $id);
 		if ($updateToken->execute()) {
 			$_SESSION['token'] = $token;
@@ -140,11 +159,11 @@ class Auth
 
 		$id = (isset($_SESSION['id'])) ? $_SESSION['id'] : 0;
 		$check = $bdd->getBdd()->prepare('SELECT name FROM users WHERE name = :name AND id != :id AND active = 1');
-		$check->bindParam(':name', $username, PDO::PARAM_STR, 16);
+		$check->bindParam(':name', $username, \PDO::PARAM_STR, 16);
 		$check->bindParam(':id', $id);
 		$check->execute();
 
-		$user = $check->fetch(PDO::FETCH_ASSOC);
+		$user = $check->fetch(\PDO::FETCH_ASSOC);
 		if ($user)
 			return false;
 
@@ -157,11 +176,11 @@ class Auth
 
 		$id = (isset($_SESSION['id'])) ? $_SESSION['id'] : 0;
 		$check = $bdd->getBdd()->prepare('SELECT email FROM users WHERE email = :email AND id != :id AND active = 1');
-		$check->bindParam(':email', $email, PDO::PARAM_STR, 60);
+		$check->bindParam(':email', $email, \PDO::PARAM_STR, 60);
 		$check->bindParam(':id', $id);
 		$check->execute();
 
-		$user = $check->fetch(PDO::FETCH_ASSOC);
+		$user = $check->fetch(\PDO::FETCH_ASSOC);
 		if ($user)
 			return false;
 
