@@ -5,6 +5,24 @@ use models\Database;
 use models\User;
 class UsersController extends User
 {
+	static public function isConnected ()
+	{
+		$bdd = new Database('home');
+		if (!isset($_SESSION['id']) && !isset($_SESSION['token'])) {
+			return false;
+		}
+		$get = $bdd->getBdd()->prepare('SELECT id, token, name FROM users WHERE id = :id AND token = :token');
+		$get->bindParam(':id', $_SESSION['id']);
+		$get->bindParam(':token', $_SESSION['token']);
+		$get->execute();
+
+		$user = $get->fetch(\PDO::FETCH_ASSOC);
+		if ($user) {
+			$_SESSION['name'] = $user['name'];
+			return true;
+		}
+	}
+
 	public function create ($username, $password, $email)
 	{
 		$bdd = new Database('home');
