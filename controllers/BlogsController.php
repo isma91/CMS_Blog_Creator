@@ -66,6 +66,7 @@ class BlogsController extends Blog
 		$create->bindParam(':description', $description);
 		$create->bindParam(':user_id', $_SESSION['id']);
 		if ($create->execute()) {
+			header('Location:./');
 			$this->setError('Congrats ! Your blog has been created.');
 			return true;
 		}
@@ -98,6 +99,7 @@ class BlogsController extends Blog
 		$update->bindParam(':id', $id);
 		$update->bindParam(':user_id', $_SESSION['id']);
 		if ($update->execute()) {
+			header('Location:./');
 			$this->setError('Congrats ! Your blog has been updated.');
 			return true;
 		}
@@ -115,6 +117,7 @@ class BlogsController extends Blog
 		$delete->bindParam(':id', $id);
 		$delete->execute();
 
+		header('Location:./');
 		$this->setError('Your blog has been deleted');
 		return true;
 	}
