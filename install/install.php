@@ -1,3 +1,9 @@
+<?php
+$config = require_once "../config.php";
+if ($config["install"] === true) {
+	header('Location: ./../');
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>

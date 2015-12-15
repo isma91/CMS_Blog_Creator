@@ -22,6 +22,7 @@ return [
 			'password' => '" . $_POST["password"] . "',
 		],
 	],
+	'install' => true
 ];";
 $config_file = file_put_contents("../config.php", $config);
 echo $config_file;
