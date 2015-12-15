@@ -4,7 +4,6 @@ require 'autoload.php';
 
 use controllers\UsersController;
 
-$connected = UsersController::isConnected();
 
 if (isset($_GET['logout'])) {
 	if (isset($_SESSION['token']) && $_SESSION['token'] == $_GET['token']) {
@@ -27,6 +26,7 @@ if (isset($_POST['connection'])) {
 	$error_sign_in = $o->getError();
 }
 
+$connected = UsersController::isConnected();
 if (!$connected) {
 	include './views/log.php';
 } else {
