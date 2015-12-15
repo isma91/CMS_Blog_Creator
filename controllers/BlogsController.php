@@ -10,43 +10,50 @@ class BlogsController extends Blog
 
 	public function __construct()
 	{
-		$this->_blogs = $this->getMyBlogs();
+
 	}
 	public function getBlogs()
 	{
 		return $this->_blogs;
 	}
+	public function getBlog()
+	{
+		return $this->_blog;
+	}
 
 	public function render()
 	{
+
+		// Create blog
 		if (isset($_POST['create_blog'])) {
-			$blog = new BlogsController();
-			$blog->create($_POST['name'], $_POST['slug'], $_POST['description']);
-			$blog_create_error = $blog->getError();
+			$this->create($_POST['name'], $_POST['slug'], $_POST['description']);
 		}
 
+		// Edit blog
 		if (isset($_POST['blog_edit'])) {
 			if ($_GET['token'] == $_SESSION['token']) {
-				$blog = new BlogsController();
-				$blog->update($_POST['name'], $_POST['slug'], $_POST['description'], $_POST['id']);
-				$error_edit_blog = $blog->getError();
+				$this->update($_POST['name'], $_POST['slug'], $_POST['description'], $_POST['id']);
 			}
 		}
-
-		if (isset($_GET['blog']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['blog'] == 'edit') {
-			if ($_GET['token'] == $_SESSION['token']) {
-				$get_blog = new BlogsController();
-				$edit_blog = $get_blog->getBlogById($_GET['id']);
-			}
-		}
-
+		// Delete blog
 		if (isset($_GET['blog']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['blog'] == 'delete') {
 			if ($_GET['token'] == $_SESSION['token']) {
-				$blog = new BlogsController();
-				$blog->delete($_GET['id']);
-				$delete_blog_error = $blog->getError();
+				$this->delete($_GET['id']);
 			}
 		}
+		// Get post
+		if (isset($_GET['blog']) && $_GET['blog'] == 'post' && isset($_GET['id']) && isset($_GET['token'])) {
+			if ($_GET['token'] == $_SESSION['token']) {
+				$this->getArticles($_GET['id']);
+			}
+		}
+		if (isset($_GET['blog']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['blog'] == 'edit') {
+			if ($_GET['token'] == $_SESSION['token']) {
+				$this->_blog = $this->getBlogById($_GET['id']);
+			}
+		}
+
+		$this->getMyBlogs();
 	}
 	public function create ($name, $slug, $description)
 	{
@@ -117,7 +124,6 @@ class BlogsController extends Blog
 		$delete->bindParam(':id', $id);
 		$delete->execute();
 
-		header('Location:./');
 		$this->setError('Your blog has been deleted');
 		return true;
 	}
@@ -188,6 +194,6 @@ class BlogsController extends Blog
 		if (empty($all)) {
 			$this->setError('You have no blog');
 		}
-		return $all;
+		$this->_blogs = $all;
 	}
 }
