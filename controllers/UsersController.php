@@ -55,9 +55,17 @@ class UsersController extends User
 		}
 	}
 
-	public function create ($username, $password, $email)
+	public function create ($username, $lastname, $firstname , $email, $password, $confirm_password, $email)
 	{
 		$bdd = new Database('home');
+
+		if (strlen($password) < 5) {
+			$this->setError("Password must be at lest 5 characters !!");
+		}
+		if ($password !== $confirm_password) {
+			$this->setError("Password are not the same !!");
+			return false;
+		}
 
 		$password = $this->_hashPassword($password);
 
@@ -70,9 +78,10 @@ class UsersController extends User
 			return false;
 		}
 
-
-		$create = $bdd->getBdd()->prepare('INSERT INTO users (name, email, password, created_at) VALUES (:name, :email, :password, NOW())');
+		$create = $bdd->getBdd()->prepare('INSERT INTO users (name, firstname, lastname, email, password, created_at) VALUES (:name, :firstname, :lastname, :email, :password, NOW())');
 		$create->bindParam(':name', $username, \PDO::PARAM_STR, 16);
+		$create->bindParam(':lastname', $lastname, \PDO::PARAM_STR, 50);
+		$create->bindParam(':firstname', $firstname, \PDO::PARAM_STR, 50);
 		$create->bindParam(':email', $email, \PDO::PARAM_STR, 60);
 		$create->bindParam(':password', $password, \PDO::PARAM_STR, 255);
 		if ($create->execute()) {

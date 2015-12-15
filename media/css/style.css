@@ -1,13 +1,14 @@
+@font-face {
+	font-family: "Abel-Regular";
+	src: url('../fonts/Abel-Regular.ttf');
+}
 body {
-	background-color: black;
-	color: white;
-	font-family: 'Roboto', sans-serif;
+	font-family: "Abel-Regular";
 }
 .input-text {
 	height: 50px;
 	font-size: 24px;
 }
-
 .log {
 	color: white;
 	position: absolute;
@@ -28,7 +29,27 @@ body {
 	font-size: 1.3em;
 	color: white;
 }
-/*@font-face {
-	font-family: "Pacifico";
-	src: url('pacifico.ttf');
-}*/
+.nav li a {
+	color : #808080;
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+  color: black;
+  border-bottom-color: black;
+}
+.mui-textfield > input:focus {
+	border-color: #000000;
+}
+.mui-textfield > input:focus ~ label,
+.masthead-brand {
+	color: #000000;
+}
+div.site-wrapper {
+	margin-top: 150px;
+}
+div.form_sign_in,
+div.form_sign_up,
+.mui-textfield > input {
+	text-align: center;
+}
