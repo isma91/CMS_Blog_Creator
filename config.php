@@ -3,9 +3,10 @@ return [
 	'databases' => [
 		'home' => [
 			'host' => 'localhost',
-			'dbname' => 'blog_creator',
+			'dbname' => 'my_blog-creator',
 			'user' => 'root',
 			'password' => '',
 		],
 	],
+	'install' => false
 ];
