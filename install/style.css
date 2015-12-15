@@ -1,0 +1,42 @@
+@font-face {
+	font-family: "Abel-Regular";
+	src: url('../media/fonts/Abel-Regular.ttf');
+}
+body {
+	font-family: "Abel-Regular";
+}
+div.install,
+div.form_install h2,
+div.db_install h2,
+.event-success,
+.event-danger {
+	font-size: 2em;
+	text-align: center;
+}
+button.next_step_install,
+div.input_install_full
+ {
+	width: 100%;
+}
+div.form_install,
+div.db_install,
+div#event {
+	display: none;
+}
+div.input_install {
+	width: 45%;
+}
+.floated_left {
+	float: left;
+}
+.floated_right {
+	float: right;
+}
+.mui-textfield > input:focus,
+.mui-textfield > textarea:focus {
+  border-color: #000000;
+}
+.mui-textfield > input:focus ~ label,
+.mui-textfield > textarea:focus ~ label {
+  color: #000000;
+}
