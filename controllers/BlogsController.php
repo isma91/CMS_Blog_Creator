@@ -2,9 +2,10 @@
 namespace controllers;
 
 use models\Blog;
+use models\Database;
 class BlogsController extends Blog
 {
-	public function create ($name)
+	public function create ($name, $slug, $description)
 	{
 		$bdd = new Database('home');
 
@@ -12,10 +13,55 @@ class BlogsController extends Blog
 			$this->setError('Blog\'s name already in use');
 			return false;
 		}
-		$create = $bdd->getBdd()->prepare('INSERT INTO blogs (name, owner_id, createdAt, updatedAt) VALUES (:name, :owner_id, NOW(), NOW())');
+		if ($this->_checkSlug($slug)) {
+			$this->setError('Blog\'s domain already in use');
+			return false;
+		}
+		$create = $bdd->getBdd()->prepare('INSERT INTO blogs (name, slug, description, user_id, created_at, updated_at) VALUES (:name, :slug, :description, :user_id, NOW(), NOW())');
 		$create->bindParam(':name', $name);
-		$create->bindParam(':owner_id', $_SESSION['id']);
-		$create->execute();
+		$create->bindParam(':slug', $slug);
+		$create->bindParam(':description', $description);
+		$create->bindParam(':user_id', $_SESSION['id']);
+		if ($create->execute()) {
+			$this->setError('Congrats ! Your blog has been created.');
+			return true;
+		}
+
+		$this->setError('Error occured, please try later');
+		return false;
+	}
+
+	public function update ($name, $slug, $description, $id = null)
+	{
+		$bdd = new Database('home');
+
+		if (is_null($id)) {
+			$this->setError('Error occured, please try later');
+			return false;
+		}
+		if ($this->_checkName($name, $id)) {
+			$this->setError('Blog\'s name already in use');
+			return false;
+		}
+		if ($this->_checkSlug($slug, $id)) {
+			$this->setError('Blog\'s domain already in use');
+			return false;
+		}
+
+		$update = $bdd->getBdd()->prepare('UPDATE blogs SET name = :name, slug = :slug, description = :description WHERE id = :id AND user_id = :user_id');
+		$update->bindParam(':name', $name);
+		$update->bindParam(':slug', $slug);
+		$update->bindParam(':description', $description);
+		$update->bindParam(':id', $id);
+		$update->bindParam(':user_id', $_SESSION['id']);
+		if ($update->execute()) {
+			$this->setError('Congrats ! Your blog has been updated.');
+			return true;
+		}
+
+		$this->setError('Error occured, please try later');
+		return false;
+
 	}
 
 	public function delete ($id)
@@ -25,20 +71,77 @@ class BlogsController extends Blog
 		$delete = $bdd->getBdd()->prepare('UPDATE blogs SET active = 0 WHERE id = :id');
 		$delete->bindParam(':id', $id);
 		$delete->execute();
+
+		$this->setError('Your blog has been deleted');
+		return true;
 	}
 
-	private function _checkName($name)
+	private function _checkName($name, $id = 0)
 	{
 		$bdd = new Database('home');
 
-		$check = $bdd->getBdd()->prepare('SELECT name FROM blogs WHERE name = :name AND active = 1');
+		$check = $bdd->getBdd()->prepare('SELECT name FROM blogs WHERE name = :name AND active = 1 AND id != :id');
+		$check->bindParam(':id', $id);
 		$check->bindParam(':name', $name);
 		$check->execute();
 
-		$blog = $check->fetch(PDO::FETCH_ASSOC);
+		$blog = $check->fetch(\PDO::FETCH_ASSOC);
 		if ($blog) {
-			return false;
+			return true;
 		}
-		return true;
+		return false;
+	}
+
+	private function _checkSlug ($slug, $id = 0)
+	{
+		$bdd = new Database('home');
+
+		$check = $bdd->getBdd()->prepare('SELECT slug FROM blogs WHERE slug = :slug AND active = 1 AND id != :id');
+		$check->bindParam(':id', $id);
+		$check->bindParam(':slug', $slug);
+		$check->execute();
+
+		$blog = $check->fetch(\PDO::FETCH_ASSOC);
+		if ($blog) {
+			return true;
+		}
+		return false;
+	}
+
+	public function getBlogBySlug ()
+	{
+		
+	}
+
+	public function getBlogById ($id)
+	{
+		$bdd = new Database('home');
+
+		$get = $bdd->getBdd()->prepare('SELECT name, id, slug, description FROM blogs WHERE id = :id AND active = 1 AND user_id = :user_id');
+		$get->bindParam(':id', $id, \PDO::PARAM_INT, 11);
+		$get->bindParam(':user_id', $_SESSION['id']);
+		$get->execute();
+
+		$blog = $get->fetch(\PDO::FETCH_ASSOC);
+		if ($blog) {
+			return $blog;
+		}
+		return false;
+	}
+
+	public function getMyBlogs ()
+	{
+		$bdd = new Database('home');
+
+		$get = $bdd->getBdd()->prepare('SELECT id, name FROM blogs WHERE user_id = :user_id AND active = 1');
+		$get->bindParam(':user_id', $_SESSION['id']);
+		$get->execute();
+
+		$all = $get->fetchAll(\PDO::FETCH_ASSOC);
+
+		if (empty($all)) {
+			$this->setError('You have no blog');
+		}
+		return $all;
 	}
 }
