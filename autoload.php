@@ -1,5 +1,6 @@
 <?php
 function autoload($class) {
+	$class = str_replace('\\', '/', $class);
     include $class . '.php';
 }
 
