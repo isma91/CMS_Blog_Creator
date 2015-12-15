@@ -40,14 +40,8 @@ CREATE TABLE IF NOT EXISTS `blogs` (
   `updated_at` datetime DEFAULT NULL,
   `active` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- Contenu de la table `blogs`
---
-
-INSERT INTO `blogs` (`id`, `name`, `slug`, `description`, `url_banner`, `font_id`, `user_id`, `created_at`, `updated_at`, `active`) VALUES
-(1, 'raph', 'raph', 'raph', NULL, 1, 1, '2015-12-14 16:08:19', '2015-12-14 16:08:19', 1);
 
 -- --------------------------------------------------------
 
