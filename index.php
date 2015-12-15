@@ -1,5 +1,9 @@
 <?php
 session_start();
+$config = require_once "./config.php";
+if ($config["install"] === false) {
+	header('Location: ./install/install.php');
+}
 require 'autoload.php';
 
 use controllers\UsersController;
