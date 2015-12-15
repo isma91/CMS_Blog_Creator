@@ -26,7 +26,6 @@ class UsersController extends User
 	{
 // edit
 		if (isset($_POST['user_update'])) {
-			var_dump('aaaaaaa');
 			$this->update($_POST['name'], $_POST['email'], $_POST['lastname'], $_POST['firstname']);
 		}
 
@@ -220,8 +219,6 @@ class UsersController extends User
 
 		$user = $check->fetch(\PDO::FETCH_ASSOC);
 		if ($user) {
-			var_dump($_SESSION);
-			var_dump($user);
 			return false;
 		}
 		return true;
