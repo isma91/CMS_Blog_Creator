@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>Register</title>
+	<title>My_blog Auth</title>
 	<link rel="stylesheet" type="text/css" href="media/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="media/css/style.css">
 	<meta charset="utf-8">

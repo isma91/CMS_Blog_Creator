@@ -1,4 +1,8 @@
 <?php
+namespace controllers;
+
+use models\Post;
+use models\Database;
 class Posts extends Post
 {
 	public function create($id, $title, $content)
