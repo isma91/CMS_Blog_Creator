@@ -5,6 +5,49 @@ use models\Blog;
 use models\Database;
 class BlogsController extends Blog
 {
+	private $_blogs;
+	private $_blog;
+
+	public function __construct()
+	{
+		$this->_blogs = $this->getMyBlogs();
+	}
+	public function getBlogs()
+	{
+		return $this->_blogs;
+	}
+
+	public function render()
+	{
+		if (isset($_POST['create_blog'])) {
+			$blog = new BlogsController();
+			$blog->create($_POST['name'], $_POST['slug'], $_POST['description']);
+			$blog_create_error = $blog->getError();
+		}
+
+		if (isset($_POST['blog_edit'])) {
+			if ($_GET['token'] == $_SESSION['token']) {
+				$blog = new BlogsController();
+				$blog->update($_POST['name'], $_POST['slug'], $_POST['description'], $_POST['id']);
+				$error_edit_blog = $blog->getError();
+			}
+		}
+
+		if (isset($_GET['blog']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['blog'] == 'edit') {
+			if ($_GET['token'] == $_SESSION['token']) {
+				$get_blog = new BlogsController();
+				$edit_blog = $get_blog->getBlogById($_GET['id']);
+			}
+		}
+
+		if (isset($_GET['blog']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['blog'] == 'delete') {
+			if ($_GET['token'] == $_SESSION['token']) {
+				$blog = new BlogsController();
+				$blog->delete($_GET['id']);
+				$delete_blog_error = $blog->getError();
+			}
+		}
+	}
 	public function create ($name, $slug, $description)
 	{
 		$bdd = new Database('home');

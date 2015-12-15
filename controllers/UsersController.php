@@ -5,6 +5,39 @@ use models\Database;
 use models\User;
 class UsersController extends User
 {
+	private $_me;
+
+	public function __construct()
+	{
+		$this->_me = $this->get();
+	}
+
+	public function setMe($me)
+	{
+		$this->_me = $me;
+	}
+
+	public function getMe()
+	{
+		return $this->_me;
+	}
+
+	public function render()
+	{
+// edit
+		if (isset($_POST['user_update'])) {
+			var_dump('aaaaaaa');
+			$this->update($_POST['name'], $_POST['email'], $_POST['lastname'], $_POST['firstname']);
+		}
+
+// delete
+		if (isset($_GET['user']) && isset($_GET['token']) && $_GET['user'] == 'delete') {
+			if ($_GET['token'] == $_SESSION['token']) {
+				$this->delete();
+			}
+		}
+	}
+
 	static public function isConnected ()
 	{
 		$bdd = new Database('home');
@@ -39,7 +72,7 @@ class UsersController extends User
 		}
 
 
-		$create = $bdd->getBdd()->prepare('INSERT INTO users (name, email, password, createdAt) VALUES (:name, :email, :password, NOW())');
+		$create = $bdd->getBdd()->prepare('INSERT INTO users (name, email, password, created_at) VALUES (:name, :email, :password, NOW())');
 		$create->bindParam(':name', $username, \PDO::PARAM_STR, 16);
 		$create->bindParam(':email', $email, \PDO::PARAM_STR, 60);
 		$create->bindParam(':password', $password, \PDO::PARAM_STR, 255);
@@ -51,7 +84,7 @@ class UsersController extends User
 
 	}
 
-	public function update ($username, $email, $password = null)
+	public function update ($username, $email, $lastname, $firstname)
 	{
 		$bdd = new Database('home');
 		
@@ -64,12 +97,15 @@ class UsersController extends User
 			return false;
 		}
 
-		$update = $bdd->getBdd()->prepare('UPDATE users SET name = :name, email = :email WHERE id = :id AND token = :token AND active = 1');
+		$update = $bdd->getBdd()->prepare('UPDATE users SET name = :name, email = :email, lastname = :lastname, firstname = :firstname, updated_at = NOW() WHERE id = :id AND token = :token AND active = 1');
 		$update->bindParam(':name', $username, \PDO::PARAM_STR, 16);
 		$update->bindParam(':email', $email, \PDO::PARAM_STR, 60);
+		$update->bindParam(':lastname', $lastname, \PDO::PARAM_STR, 60);
+		$update->bindParam(':firstname', $firstname, \PDO::PARAM_STR, 60);
 		$update->bindParam(':id', $_SESSION['id']);
 		$update->bindParam(':token', $_SESSION['token']);
 		if ($update->execute()) {
+			header('Location:./');
 			return true;
 		}
 	}
@@ -99,6 +135,7 @@ class UsersController extends User
 		$delete->bindParam(':token', $_SESSION['token']);
 		if ($delete->execute()) {
 			session_destroy();
+			header('Location:./');
 			return true;
 		}
 	}
@@ -129,18 +166,18 @@ class UsersController extends User
 		return true;
 	}
 
-	public function test ()
+	public function get ()
 	{
 		$bdd = new Database('home');
 
-		$getUser = $bdd->getBdd()->prepare('SELECT id FROM users WHERE id = :id AND token = :token');
+		$getUser = $bdd->getBdd()->prepare('SELECT lastname, firstname, name, email FROM users WHERE id = :id AND token = :token');
 		$getUser->bindParam(':id', $_SESSION['id']);
 		$getUser->bindParam(':token', $_SESSION['token']);
 		$getUser->execute();
 
 		$user = $getUser->fetch(\PDO::FETCH_ASSOC);
 		if ($user) {
-			return true;
+			return $user;
 		}
 
 		return false;
@@ -176,15 +213,17 @@ class UsersController extends User
 		$bdd = new Database('home');
 
 		$id = (isset($_SESSION['id'])) ? $_SESSION['id'] : 0;
-		$check = $bdd->getBdd()->prepare('SELECT name FROM users WHERE name = :name AND id != :id AND active = 1');
+		$check = $bdd->getBdd()->prepare('SELECT * FROM users WHERE name = :name AND id != :id AND active = 1');
 		$check->bindParam(':name', $username, \PDO::PARAM_STR, 16);
 		$check->bindParam(':id', $id);
 		$check->execute();
 
 		$user = $check->fetch(\PDO::FETCH_ASSOC);
-		if ($user)
+		if ($user) {
+			var_dump($_SESSION);
+			var_dump($user);
 			return false;
-
+		}
 		return true;
 	}
 
