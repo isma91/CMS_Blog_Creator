@@ -100,16 +100,6 @@ $(document).ready(function(){
 		username = $("input#username").val();
 		db_password = $("input#db_password").val();
 		db_name = $("input#db_name").val();
-		/* @TODO : mettre ce ajax post juste apres que l'installation soit fini et apres remplir la bdd */
-		/*$.post( "create_config.php", {host: host, username: username, password: db_password, database_name: db_name}, function (data) {
-			if (data !== 0) {
-				$("div#event").html('<div class="alert alert-success event-success">Config file created !!</div>');
-				$("div#event").fadeIn('slow');
-			} else{
-				$("div#event").html('<div class="alert alert-danger event-danger">Error when creating the config file !!</div>');
-				$("div#event").fadeIn('slow');
-			}
-		});*/
 		$.post( "install_db.php", {host: host, username: username, password: db_password, database_name: db_name}, function (data) {
 			var data_error;
 			data_error = false;
@@ -154,5 +144,33 @@ $(document).ready(function(){
 		}
 	});
 	$("button#finish_install").click(function() {
+		$.post( "create_config.php", {host:  check_database_host, username: check_database_username, password: check_database_db_password, database_name: check_database_db_name}, function (data) {
+			if (data !== 0) {
+				$("div#event").html('<div class="alert alert-success event-success">Config file created !!</div>');
+				$("div#event").fadeIn('slow');
+			} else {
+				$("div#event").html('<div class="alert alert-danger event-danger">Error when creating the config file !!</div>');
+				$("div#event").fadeIn('slow');
+			}
+		});
+		$.post( "install_import_db.php", {host:  $("input#host").val(), username: $("input#username").val(), password: $("input#db_password").val(), database_name: $("input#db_name").val(), blogger_name: $("input#pseudo").val(), blogger_firstname: $("input#first_name").val(), blogger_lastname: $("input#last_name").val(), blogger_email: $("input#email").val(), blogger_password: $("input#password").val()}, function (data) {
+			$("div.form_install").css("display", "none");
+			$("div.db_install").css("display", "none");
+			$("div.loader").css("display", "inline");
+			$("div.install").html("Completing the Installation...");
+			if (data === "true") {
+				$("div#event").css("display", "none");
+				$("div.loader").css("display", "none");
+				$("div#event").html('<div class="alert alert-success event-success">Your blog creator is ready to go !!</div>');
+				$("div#event").fadeIn('slow');
+				$("div.install").html("Done !!");
+			} else {
+				$("div.loader").css("display", "none");
+				$("div#event").css("display", "none");
+				$("div#event").html('<div class="alert alert-danger event-danger">All tables have not been created in the database !! Try Again</div>');
+				$("div#event").fadeIn('slow');
+				$("div.install").html("Restart the installation and check if the 'install' folder is in the root of the project");
+			}
+		});
 	});
 });

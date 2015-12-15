@@ -22,9 +22,10 @@
 				<span class="glyphicon glyphicon-circle-arrow-right"></span>
 			</button>
 		</div>
+		<div class="loader"></div>
 		<div class="jumbotron form_install">
 			<div class="div_form_install">
-				<h2>Admin Profile</h2>
+				<h2>Your Profile</h2>
 				<div class="mui-textfield input_install floated_left">
 					<input id="last_name" type="text">
 					<label>Last Name</label>
