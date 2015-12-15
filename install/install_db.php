@@ -21,6 +21,7 @@ try {
 	foreach ($donnees_database as $value) {
 		if ($value["Database"] === $_POST["database_name"]) {
 			$duplicate_database = true;
+			break;
 		}
 	}
 	if ($duplicate_database === true) {
