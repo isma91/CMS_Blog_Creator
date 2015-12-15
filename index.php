@@ -32,9 +32,9 @@ if (isset($_POST['connection'])) {
 
 $connected = UsersController::isConnected();
 if (!$connected) {
-	if ($_GET['page'] == 'connection' && isset($_GET['page'])) {
+	if (isset($_GET['page']) && $_GET['page'] == 'connection') {
 		include './views/connect.php';
-	} elseif (($_GET['page'] == 'home' && isset($_GET['page'])) || !isset($_GET['page'])) {
+	} elseif ((isset($_GET['page']) && $_GET['page'] == 'home') || !isset($_GET['page'])) {
 		include './views/home.php';
 	} else {
 		include './views/home.php';
