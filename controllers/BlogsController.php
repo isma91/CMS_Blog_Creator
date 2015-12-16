@@ -165,7 +165,7 @@ class BlogsController extends Blog
 		$articles = $getArticles->fetchAll(\PDO::FETCH_ASSOC);
 
 		// GET BLOG INFO
-		$getBlog = $bdd->getBdd()->prepare('SELECT blogs.id AS blog_id, blogs.name, blogs.slug, blogs.description, users.name, blogs.user_id FROM blogs LEFT JOIN users ON users.id = blogs.user_id WHERE blogs.active = 1 AND slug = :slug');
+		$getBlog = $bdd->getBdd()->prepare('SELECT blogs.id AS blog_id, blogs.name AS blog_name, blogs.slug, blogs.description, users.name AS user_name, blogs.user_id FROM blogs LEFT JOIN users ON users.id = blogs.user_id WHERE blogs.active = 1 AND slug = :slug');
 		$getBlog->bindParam(':slug', $slug);
 		$getBlog->execute();
 
