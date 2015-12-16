@@ -175,7 +175,7 @@ class BlogsController extends Blog
 			if (!empty($articles)) {
 				$response['articles'] = $articles;
 			}
-			return $response;
+			return json_encode($response);
 		}
 		return false;
 	}
