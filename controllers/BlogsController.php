@@ -152,13 +152,13 @@ class BlogsController extends Blog
 		return false;
 	}
 
-	public function getBlogBySlug ($slug, $page = 0)
+	public function getBlogBySlug ($slug, $limit = 10)
 	{
 		$bdd = new Database('home');
 
-		$offset = ($page * 10);
+		//$offset = ($page * 10);
 		// GET ARTICLE
-		$getArticles = $bdd->getBdd()->prepare('SELECT posts.id AS post_id, posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug');
+		$getArticles = $bdd->getBdd()->prepare('SELECT posts.id AS post_id, posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug ORDER BY posts.id DESC LIMIT ' . $limit);
 		$getArticles->bindParam(':slug', $slug);
 		$getArticles->execute();
 
