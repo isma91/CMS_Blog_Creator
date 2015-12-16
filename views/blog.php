@@ -2,8 +2,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="description" content="" />
-	<title></title>
+	<meta name="description" content="just a blog" />
+	<title>blog</title>
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap.min.css" />
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap-theme.min.css" />
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/mui.min.css" />
