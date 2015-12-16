@@ -59,10 +59,6 @@ class BlogsController extends Blog
 	{
 		$bdd = new Database('home');
 
-		if ($this->_checkName($name)) {
-			$this->setError('Blog\'s name already in use');
-			return false;
-		}
 		if ($this->_checkSlug($slug)) {
 			$this->setError('Blog\'s domain already in use');
 			return false;
@@ -88,10 +84,6 @@ class BlogsController extends Blog
 
 		if (is_null($id)) {
 			$this->setError('Error occured, please try later');
-			return false;
-		}
-		if ($this->_checkName($name, $id)) {
-			$this->setError('Blog\'s name already in use');
 			return false;
 		}
 		if ($this->_checkSlug($slug, $id)) {
@@ -160,9 +152,21 @@ class BlogsController extends Blog
 		return false;
 	}
 
-	public function getBlogBySlug ()
+	public function getBlogBySlug ($slug, $page = 0)
 	{
-		
+		$bdd = new Database('home');
+
+		$offset = ($page * 10);
+		$get = $bdd->getBdd()->prepare('SELECT blogs.name, blogs.slug, blogs.description, posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug LIMIT 10 OFFSET :offset');
+		$get->bindParam(':slug', $slug);
+		$get->bindParam(':offset', $offset, \PDO::PARAM_INT);
+		$get->execute();
+
+		$blog = $get->fetchAll(\PDO::FETCH_ASSOC);
+		if ($blog) {
+			return $blog;
+		}
+		return false;
 	}
 
 	public function getBlogById ($id)
