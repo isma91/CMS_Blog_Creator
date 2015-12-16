@@ -175,9 +175,10 @@ class BlogsController extends Blog
 			if (!empty($articles)) {
 				$response['articles'] = $articles;
 			}
-			return json_encode($response);
+		} else {
+			$response = array('error' => 'blog slug invalid');
 		}
-		return false;
+		return json_encode($response);
 	}
 
 	public function getBlogById ($id)

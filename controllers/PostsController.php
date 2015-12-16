@@ -122,6 +122,9 @@ class PostsController extends Post
 			$this->setPost($post);
 			return true;
 		} else {
+			if (empty($post)) {
+				$post = array('error' => 'post id invalid');
+			}
 			return json_encode($post);
 		}
 	}
