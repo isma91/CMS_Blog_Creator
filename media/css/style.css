@@ -58,6 +58,7 @@ div.resume_last_six_blog {
 	float: left;
 	margin: 3%;
 }
-h2.blog_name {
+h2.blog_name,
+h3.post_title {
 	text-align: center;
 }
