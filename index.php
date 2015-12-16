@@ -27,17 +27,38 @@ if (isset($_POST['connection'])) {
 	$o = new UsersController();
 	$o->connection($_POST['log'], $_POST['password']);
 	$error_sign_in = $o->getError();
+	header('Location: ./?page=panel');
 }
 
 $connected = UsersController::isConnected();
-//if (!$connected) {
-	if (isset($_GET['page']) && $_GET['page'] == 'connection') {
+if (isset($_GET["page"])) {
+	switch ($_GET["page"]) {
+		case 'connection':
+		include './views/menu.php';
 		include './views/connect.php';
-	} elseif ((isset($_GET['page']) && $_GET['page'] == 'home') || !isset($_GET['page'])) {
+		break;
+		case 'home':
+		include './views/menu.php';
 		include './views/home.php';
-	} elseif (isset($_GET['page']) && $_GET['page'] == 'panel' && $connected) {
-		include './views/panel.php';
+		break;
+		case 'panel':
+		if ($connected) {
+			include './views/panel.php';
+		} else {
+			include './views/connect.php';
+		}
+		break;
+		default:
+		include './views/menu.php';
+		include './views/home.php';
+		break;
+	}
+} else {
+	if (isset($_GET["blog"])) {
+		include './views/menu.php';
+		include './views/blog.php';
 	} else {
+		include './views/menu.php';
 		include './views/home.php';
 	}
-//}
+}
