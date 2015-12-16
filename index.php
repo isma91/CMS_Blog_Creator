@@ -30,14 +30,14 @@ if (isset($_POST['connection'])) {
 }
 
 $connected = UsersController::isConnected();
-if (!$connected) {
+//if (!$connected) {
 	if (isset($_GET['page']) && $_GET['page'] == 'connection') {
 		include './views/connect.php';
 	} elseif ((isset($_GET['page']) && $_GET['page'] == 'home') || !isset($_GET['page'])) {
 		include './views/home.php';
+	} elseif (isset($_GET['page']) && $_GET['page'] == 'panel' && $connected) {
+		include './views/panel.php';
 	} else {
 		include './views/home.php';
 	}
-} else {
-	include './views/panel.php';
-}
+//}
