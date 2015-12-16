@@ -9,5 +9,5 @@ if (isset($_GET['slug'])) {
     $blog = $o->getBlogBySlug($_GET['slug'], $page);
 }
 if (isset($blog)) {
-    var_dump($blog);
+   echo $blog;
 }
