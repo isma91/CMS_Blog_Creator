@@ -30,7 +30,7 @@ class PostsController extends Post
 
 	public function render()
 	{
-		if (isset($_GET['token']) && isset($_POST['post_update']) && isset($_GET['post_id'])) {
+		if (isset($_GET['token']) && isset($_POST['post_update']) && isset($_GET['post_id']) && $_GET['post'] == 'edit') {
 			if ($_GET['token'] == $_SESSION['token']) {
 				$this->update($_POST['title'], $_POST['content'], $_GET['post_id']);
 			}
@@ -42,7 +42,7 @@ class PostsController extends Post
 			}
 		}
 
-		if (isset($_GET['post']) && isset($_GET['post_id']) && isset($_GET['token'])) {
+		if (isset($_GET['post']) && isset($_GET['post_id']) && isset($_GET['token']) && $_GET['post'] == 'delete') {
 			if ($_GET['token'] == $_SESSION['token']) {
 				$this->delete($_GET['post_id']);
 			}
