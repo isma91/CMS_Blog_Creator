@@ -22,11 +22,11 @@ $(document).ready(function(){
 					$.getJSON('api/?blog=' + data.slug[j] + '&limit=2', function (data) {
 						if (typeof data.articles !== "undefined") {
 							for (k = 0; k < data.articles.length; k = k + 1) {
-								if (data.articles[k].content.length > 15) {
-									data.articles[k].content = data.articles[k].content.substr(0, 15);
+								if (data.articles[k].content.length > 50) {
+									data.articles[k].content = data.articles[k].content.substr(0, 50);
 									data.articles[k].content = data.articles[k].content + "...";
 								}
-								document.getElementById(data.slug).innerHTML = document.getElementById(data.slug).innerHTML + '<div class="mui-panel"><h3 class="post_title">' + data.articles[k].title + '</h3><div class="mui-divider"></div><p>' + data.articles[k].content + '</p><div class="mui-divider"></div><i>' + data.articles[k].created_at + '</i></div>';
+								document.getElementById(data.slug).innerHTML = document.getElementById(data.slug).innerHTML + '<div class="mui-panel"><h3 class="post_title">' + data.articles[k].title + '</h3><div class="mui-divider"></div><p>' + data.articles[k].content + '</p><div class="mui-divider"></div>Créer le <i>' + data.articles[k].created_at + '</i></div>';
 							}
 						} else {
 							document.getElementById(data.slug).innerHTML = '<div class="mui-panel"><h3 class="post_title">Not posts in this blog yet !!</h3></div>';
