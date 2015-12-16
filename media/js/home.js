@@ -10,7 +10,6 @@ $(document).ready(function(){
 		$.get("models/get_last_blogs.php", function (data) {
 			$("div#last_six_blogs").html("");
 			data = JSON.parse(data);
-			console.log(data);
 			if (data === null) {
 				$("div#last_six_blogs").html('<div class="jumbotron"><h2 class="blog_name">No Blog yet !!</h2><div class="mui-panel"></div></div>');
 			} else {
