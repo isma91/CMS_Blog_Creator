@@ -173,6 +173,16 @@ class BlogsController extends Blog
 		if ($blog !== false) {
 			$response = $blog;
 			if (!empty($articles)) {
+				$i = 0;
+				foreach ($articles as $article) {
+					$nb_comments = $bdd->getBdd()->prepare('SELECT COUNT(id) AS nb_comments FROM comments WHERE post_id = :post_id');
+					$nb_comments->bindParam(':post_id', $article['post_id'], \PDO::PARAM_INT);
+					$nb_comments->execute();
+
+					$nb_comments = $nb_comments->fetch(\PDO::FETCH_ASSOC);
+					$articles[$i]['nb_comments'] = $nb_comments['nb_comments'];
+					$i++;
+				}
 				$response['articles'] = $articles;
 			}
 		} else {
