@@ -62,3 +62,6 @@ h2.blog_name,
 h3.post_title {
 	text-align: center;
 }
+#logout {
+	float: right;
+}
