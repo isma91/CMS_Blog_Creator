@@ -22,10 +22,12 @@ class PostsController extends Post
 	{
 		return $this->_posts;
 	}
+
 	public function setPosts($posts)
 	{
 		$this->_posts = $posts;
 	}
+
 	public function render()
 	{
 		if (isset($_GET['token']) && isset($_POST['post_update']) && isset($_GET['post_id'])) {
@@ -81,6 +83,7 @@ class PostsController extends Post
 		$this->setError('Successfully updated');
 		return true;
 	}
+
 	public function delete($id)
 	{
 		$bdd = new Database('home');
@@ -92,6 +95,7 @@ class PostsController extends Post
 		$this->setError('Successfully removed');
 		return true;
 	}
+
 	public function readPosts($blog_id)
 	{
 		$bdd = new Database('home');
