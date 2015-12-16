@@ -1,6 +1,5 @@
 <?php
-$config = require_once "../config.php";
-if ($config["install"] === true) {
+if (file_exists('./../config.php')) {
 	header('Location: ./../');
 }
 ?>
