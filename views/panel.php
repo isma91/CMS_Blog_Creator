@@ -75,7 +75,11 @@ $one = $post->getPost();
 				<legend>My blogs</legend>
 				<ul>
 					<?php foreach ($blogs as $blog) { ?>
-					<li><?= $blog['name']; ?> - <a href="?blog=edit&amp;token=<?= $_SESSION['token'] ?>&amp;id=<?= $blog['id'] ?>">edit</a> - <a href="?blog=delete&amp;token=<?= $_SESSION['token'] ?>&amp;id=<?= $blog['id'] ?>">delete</a> - <a href="?blog=post&amp;token=<?= $_SESSION['token'] ?>&amp;blog_id=<?= $blog['id'] ?>">posts</a></li>
+					<li><?= $blog['name']; ?> - 
+						<a href="?blog=edit&amp;token=<?= $_SESSION['token'] ?>&amp;id=<?= $blog['id'] ?>&amp;page=panel">edit</a> - 
+						<a href="?blog=delete&amp;token=<?= $_SESSION['token'] ?>&amp;id=<?= $blog['id'] ?>&amp;page=panel">delete</a> - 
+						<a href="?blog=post&amp;token=<?= $_SESSION['token'] ?>&amp;blog_id=<?= $blog['id'] ?>&amp;page=panel">posts</a>
+					</li>
 					<?php } ?>
 				</ul>
 			</fieldset>
@@ -95,7 +99,7 @@ $one = $post->getPost();
 				email <input type="text" value="<?= $me['email']; ?>" name="email">
 				<input type="submit" name="user_update">
 			</form>
-			<a href="?user=delete&amp;token=<?= $_SESSION['token'] ?>">Remove my account ? :(</a>
+			<a href="?user=delete&amp;token=<?= $_SESSION['token'] ?>&amp;page=panel">Remove my account ? :(</a>
 		</fieldset>
 	</div>
 	<div id="posts">
@@ -105,8 +109,8 @@ $one = $post->getPost();
 			<ul>
 				<?php foreach ($posts as $post) { ?>
 				<li><?php echo $post['title']; ?> - 
-					<a href="?post=edit&amp;post_id=<?php echo $post['id']; ?>&amp;token=<?php echo $_SESSION['token']; ?>">edit</a> - 
-					<a href="?post=delete&amp;post_id=<?php echo $post['id']; ?>&amp;token=<?php echo $_SESSION['token']; ?>">delete</a>
+					<a href="?post=edit&amp;post_id=<?php echo $post['id']; ?>&amp;token=<?php echo $_SESSION['token']; ?>&amp;page=panel">edit</a> - 
+					<a href="?post=delete&amp;post_id=<?php echo $post['id']; ?>&amp;token=<?php echo $_SESSION['token']; ?>&amp;page=panel">delete</a>
 				</li>
 				<?php } ?>
 			</ul>
@@ -122,7 +126,7 @@ $one = $post->getPost();
 		<?php if (isset($one)) { ?>
 		<fieldset>
 			<legend>Edit article</legend>
-		<?php echo (isset($post_error)) ? $post_error : ""; ?>
+			<?php echo (isset($post_error)) ? $post_error : ""; ?>
 			<form action="#" method="post">
 				<input type="text" name="title" value="<?php echo $one['title']; ?>"></input>
 				<textarea name="content"><?php echo $one['content']; ?></textarea>
