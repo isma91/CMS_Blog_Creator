@@ -157,14 +157,25 @@ class BlogsController extends Blog
 		$bdd = new Database('home');
 
 		$offset = ($page * 10);
-		$get = $bdd->getBdd()->prepare('SELECT blogs.name, blogs.slug, blogs.description, posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug LIMIT 10 OFFSET :offset');
-		$get->bindParam(':slug', $slug);
-		$get->bindParam(':offset', $offset, \PDO::PARAM_INT);
-		$get->execute();
+		// GET ARTICLE
+		$getArticles = $bdd->getBdd()->prepare('SELECT posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug');
+		$getArticles->bindParam(':slug', $slug);
+		$getArticles->execute();
 
-		$blog = $get->fetchAll(\PDO::FETCH_ASSOC);
-		if ($blog) {
-			return $blog;
+		$articles = $getArticles->fetchAll(\PDO::FETCH_ASSOC);
+
+		// GET BLOG INFO
+		$getBlog = $bdd->getBdd()->prepare('SELECT name, slug, description FROM blogs WHERE active = 1 AND slug = :slug');
+		$getBlog->bindParam(':slug', $slug);
+		$getBlog->execute();
+
+		$blog = $getBlog->fetch(\PDO::FETCH_ASSOC);
+		if ($blog !== false) {
+			$response = $blog;
+			if (!empty($articles)) {
+				$response['articles'] = $articles;
+			}
+			return $response;
 		}
 		return false;
 	}
