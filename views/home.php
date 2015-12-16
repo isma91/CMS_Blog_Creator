@@ -9,13 +9,13 @@
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/mui.min.css" />
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/style.css" />
 	<script src="media/js/jquery-2.1.4.min.js"></script>
-	<script src="media/js/log.js"></script>
+	<script src="media/js/home.js"></script>
 </head>
 <body>
 	<div class="container">
 		<nav class="navbar navbar-default">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">My_Blog-Creator</a>
+				<a class="navbar-brand" href="?page=home">My_Blog-Creator</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
@@ -34,6 +34,8 @@
 				</div>        
 			</div>
 		</nav>
+		<div id="last_six_blogs">
+		</div>
 	</div>
 </body>
 </html>

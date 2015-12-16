@@ -53,3 +53,8 @@ div.form_sign_up,
 .mui-textfield > input {
 	text-align: center;
 }
+div.resume_last_six_blog {
+	width: 30%;
+	float: left;
+	margin: 3%;
+}
