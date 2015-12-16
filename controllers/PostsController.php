@@ -109,7 +109,7 @@ class PostsController extends Post
 		return true;
 	}
 
-	public function readPost($id)
+	public function readPost($id, $json = 0)
 	{
 		$bdd = new Database('home');
 
@@ -118,7 +118,11 @@ class PostsController extends Post
 		$read->execute();
 
 		$post = $read->fetch(\PDO::FETCH_ASSOC);
-		$this->setPost($post);
-		return true;
+		if ($json == 0) {
+			$this->setPost($post);
+			return true;
+		} else {
+			return json_encode($post);
+		}
 	}
 }

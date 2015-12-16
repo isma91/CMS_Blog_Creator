@@ -158,14 +158,14 @@ class BlogsController extends Blog
 
 		$offset = ($page * 10);
 		// GET ARTICLE
-		$getArticles = $bdd->getBdd()->prepare('SELECT posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug');
+		$getArticles = $bdd->getBdd()->prepare('SELECT posts.id AS post_id, posts.title, posts.content, posts.created_at, posts.updated_at FROM blogs LEFT JOIN posts ON posts.blog_id = blogs.id WHERE blogs.active = 1 AND posts.active = 1 AND blogs.slug = :slug');
 		$getArticles->bindParam(':slug', $slug);
 		$getArticles->execute();
 
 		$articles = $getArticles->fetchAll(\PDO::FETCH_ASSOC);
 
 		// GET BLOG INFO
-		$getBlog = $bdd->getBdd()->prepare('SELECT name, slug, description FROM blogs WHERE active = 1 AND slug = :slug');
+		$getBlog = $bdd->getBdd()->prepare('SELECT id AS blog_id, name, slug, description FROM blogs WHERE active = 1 AND slug = :slug');
 		$getBlog->bindParam(':slug', $slug);
 		$getBlog->execute();
 
