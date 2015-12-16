@@ -1,9 +1,11 @@
 @font-face {
-	font-family: "Abel-Regular";
 	src: url('../fonts/Abel-Regular.ttf');
+	font-family: "Abel-Regular";
+	src: url('../fonts/Arctic.otf');
+	font-family: "Arctic";
 }
 body {
-	font-family: "Abel-Regular";
+	font-family: "Abel-Regular", sans-serif;
 }
 .input-text {
 	height: 50px;
@@ -63,5 +65,16 @@ h3.post_title {
 	text-align: center;
 }
 #logout {
+	float: right;
+}
+div#blog_name {
+	text-align: center;
+	font-size: 2em;
+	font-family: "Arctic", sans-serif;
+}
+.floated_left {
+	float: left;
+}
+.floated_right {
 	float: right;
 }
