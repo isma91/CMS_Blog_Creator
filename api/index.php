@@ -34,7 +34,7 @@ if (isset($_POST['title']) && isset($_POST['content']) && isset($_POST['post_id'
 if (isset($_GET['connected'])) {
 	$connected = UsersController::isConnected();
 	if ($connected) {
-		echo json_encode(array('connected' => true));
+		echo json_encode(array('connected' => true, 'id' => $_SESSION['id'], 'token' => $_SESSION['token'], 'name' => $_SESSION['name']));
 	} else {
 		echo json_encode(array('connected' => false));
 	}
