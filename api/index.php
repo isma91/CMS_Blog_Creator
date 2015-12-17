@@ -7,6 +7,7 @@ use controllers\PostsController;
 use controllers\CommentsController;
 use controllers\CategoriesController;
 use controllers\MailsController;
+use conntrollers\UsersController;
 
 if (isset($_GET['blog'])) {
 	$limit = (isset($_GET['limit']) && (is_int($_GET['limit']) || is_numeric($_GET['limit']))) ? $_GET['limit'] : 10;
