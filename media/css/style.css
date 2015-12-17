@@ -7,30 +7,6 @@
 body {
 	font-family: "Abel-Regular", sans-serif;
 }
-.input-text {
-	height: 50px;
-	font-size: 24px;
-}
-.log {
-	color: white;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-left: -250px;
-	margin-top: -250px;
-	padding: 25px;
-	border: 2px solid #999;
-	width: 500px;
-	height: 370px;
-}
-.log h2 {
-	color: #999;
-}
-.log p {
-	padding-top: 5px;
-	font-size: 1.3em;
-	color: white;
-}
 .nav li a {
 	color : #808080;
 }
@@ -40,25 +16,26 @@ body {
   color: black;
   border-bottom-color: black;
 }
-.mui-textfield > input:focus {
+.mui-textfield > input:focus,
+.mui-textfield > textarea:focus {
 	border-color: #000000;
 }
 .mui-textfield > input:focus ~ label,
+.mui-textfield > textarea:focus ~ label,
 .masthead-brand {
 	color: #000000;
 }
-div.site-wrapper {
-	margin-top: 150px;
-}
 div.form_sign_in,
 div.form_sign_up,
-.mui-textfield > input {
+.mui-textfield > input,
+.mui-textfield > textarea,
+.title {
 	text-align: center;
 }
 div.resume_last_six_blog {
-	width: 30%;
+	width: 40%;
 	float: left;
-	margin: 3%;
+	margin: 5%;
 }
 h2.blog_name,
 h3.post_title {
@@ -77,4 +54,25 @@ div#blog_name {
 }
 .floated_right {
 	float: right;
+}
+button.toggle_account,
+button.toggle_blogs,
+button.crud_blog,
+button.toggle_create_blog,
+button.button_blog_update,
+button.button_blog_remove,
+button.button_post_create,
+a.retour,
+div.display-error,
+button.button_post_update,
+div.update_post,
+div.create_post {
+	width: 100%;
+	text-align: center;
+}
+div.account,
+div.blogs,
+div.create_blog {
+	text-align: center;
+	display: none;
 }

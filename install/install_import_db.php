@@ -16,7 +16,7 @@ try {
 	$bdd = new PDO("mysql:host=" . $_POST["host"] . ";dbname=" . $_POST["database_name"], $_POST["username"], $_POST["password"]);
 	$sql = "CREATE TABLE IF NOT EXISTS `blogs` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(20) NOT NULL,
+		`name` varchar(40) NOT NULL,
 		`slug` varchar(30) NOT NULL,
 		`description` text,
 		`url_banner` int(11) DEFAULT NULL,
@@ -33,6 +33,15 @@ try {
 			`active` int(11) NOT NULL DEFAULT '1',
 			PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+		INSERT INTO `categories` (`id`, `name`, `active`) VALUES
+			(1, 'video game', 1),
+			(2, 'food', 1),
+			(3, 'art', 1),
+			(4, 'school', 1),
+			(5, 'fun', 1),
+			(6, 'useless', 1),
+			(7, 'other', 1),
+			(8, 'friend', 1);
 		CREATE TABLE IF NOT EXISTS `comments` (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
 			`post_id` int(11) NOT NULL,

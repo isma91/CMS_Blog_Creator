@@ -24,12 +24,10 @@ class UsersController extends User
 
 	public function render()
 	{
-// edit
 		if (isset($_POST['user_update'])) {
 			$this->update($_POST['name'], $_POST['email'], $_POST['lastname'], $_POST['firstname']);
 		}
 
-// delete
 		if (isset($_GET['user']) && isset($_GET['token']) && $_GET['user'] == 'delete') {
 			if ($_GET['token'] == $_SESSION['token']) {
 				$this->delete();

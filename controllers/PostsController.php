@@ -36,9 +36,9 @@ class PostsController extends Post
 			}
 		}
 
-		if (isset($_GET['token']) && isset($_POST['create_post']) && isset($_GET['blog_id'])) {
-			if ($_GET['token'] == $_SESSION['token']) {
-				$this->create($_GET['blog_id'], $_POST['title'], $_POST['content']);
+		if (isset($_POST['token']) && isset($_POST['create_post']) && isset($_POST['blog_id'])) {
+			if ($_POST['token'] == $_SESSION['token']) {
+				$this->create($_POST['blog_id'], $_POST['title'], $_POST['content']);
 			}
 		}
 

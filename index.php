@@ -14,7 +14,6 @@ if (isset($_GET['logout'])) {
 		header('Location:./');
 	}
 }
-/* inscription */
 if (isset($_POST['register'])) {
 	$o = new UsersController();
 	if ($o->create($_POST["username"], $_POST["lastname"], $_POST["firstname"] , $_POST["email"], $_POST["password"], $_POST["confirm_password"], $_POST["email"])) {
@@ -22,7 +21,6 @@ if (isset($_POST['register'])) {
 	}
 	$error_sign_up = $o->getError();
 }
-/* login */
 if (isset($_POST['connection'])) {
 	$o = new UsersController();
 	$o->connection($_POST['log'], $_POST['password']);
@@ -43,8 +41,24 @@ if (isset($_GET["page"])) {
 		break;
 		case 'panel':
 		if ($connected) {
-			include './views/panel.php';
+			if (isset($_GET["blog"]) && $_GET["blog"] === "edit") {
+				include './views/menu.php';
+				include './views/edit.php';
+			} elseif (isset($_GET["blog"]) && $_GET["blog"] === "post") {
+				include './views/menu.php';
+				include './views/panel_post.php';
+			} elseif (isset($_GET["post"]) && $_GET["post"] === "edit") {
+				include './views/menu.php';
+				include './views/panel_post_edit.php';
+			} elseif (isset($_GET["post"]) && $_GET["post"] === "create") {
+				include './views/menu.php';
+				include './views/panel_post_create.php';
+			} else {
+				include './views/menu.php';
+				include './views/panel.php';
+			}
 		} else {
+			include './views/menu.php';
 			include './views/connect.php';
 		}
 		break;

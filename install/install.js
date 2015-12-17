@@ -24,7 +24,6 @@ $(document).ready(function(){
 		}
 		$("div.div_form_install").fadeToggle("slow");
 		$("div.db_install").fadeIn("slow");
-
 	});
 	$("input#password").bind("change paste keyup", function() {
 		var score, password;

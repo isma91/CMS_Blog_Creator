@@ -11,8 +11,8 @@ $(document).ready(function(){
 		$.getJSON('api/?blog=' + slug, function (data) {
 			$('meta[name=description]').remove();
 			$('head').append( '<meta name="description" content="' + data.description + '">' );
-			document.title = data.name;
-			$("div#blog_name").html(data.name);
+			document.title = data.blog_name;
+			$("div#blog_name").html(data.blog_name + ' by <a href="?profile=' + data.user_id[i] +  '">' + data.user_name + '</a>');
 			if (typeof data.articles !== "undefined") {
 				for (i = 0; i < data.articles.length; i = i + 1) {
 					document.getElementById('blog_posts').innerHTML = document.getElementById('blog_posts').innerHTML + '<div class="jumbotron" id="' + data.articles[i].post_id + '"></div>'

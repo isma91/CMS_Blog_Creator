@@ -2,138 +2,169 @@
 use controllers\BlogsController;
 use controllers\UsersController;
 use controllers\PostsController;
-?>
 
-<?php
 $user = new UsersController();
 $user->render();
 $user_error = $user->getError();
 $me = $user->getMe();
-?>
-
-<?php
 $blog = new BlogsController();
 $blog->render();
 $blog_error = $blog->getError();
 $blogs = $blog->getBlogs();
 $edit_blog = $blog->getBlog();
-?>
-
-<?php
 $post = new PostsController();
 $post->render();
 $post_error = $post->getError();
 $posts = $post->getPosts();
 $one = $post->getPost();
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Admin panel</title>
 	<meta charset="utf-8">
-	<style type="text/css">
-	#user {
-		display: none;
-	}
-	</style>
+	<meta name="description" content="panel description" />
+	<title>Panel</title>
+	<link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap.min.css" />
+	<link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap-theme.min.css" />
+	<link media="all" type="text/css" rel="stylesheet" href="media/css/mui.min.css" />
+	<link media="all" type="text/css" rel="stylesheet" href="media/css/style.css" />
+	<script src="media/js/jquery-2.1.4.min.js"></script>
+	<script src="media/js/panel.js"></script>
 </head>
 <body>
-	<a href="?logout=1&amp;token=<?= $_SESSION['token'] ?>">Déconnexion</a>
-	<p>Bienvenue <?= $_SESSION['name'] ?>.</p>
-	<div id="blog">
-		<?= (isset($blog_error)) ? $blog_error : ""; ?>
-		<?php
-		if (isset($edit_blog) && !empty($edit_blog)) {
-			var_dump('edit');
-			?>
-			<fieldset>
-				<legend>Edit my blog</legend>
-				<a href="./">Back</a>
-				<form action="#" method="post">
-					Name : <input type="text" name="name" value="<?= $edit_blog['name']; ?>">
-					Slug : <input type="text" name="slug" value="<?= $edit_blog['slug']; ?>">
-					<input type="hidden" name="id" value="<?= $edit_blog['id']; ?>">
-					<input type="hidden" name="token" value="<?= $_SESSION['token']; ?>">
-					Description :<textarea name="description"><?= $edit_blog['description']; ?></textarea>
-					<input type="submit" name="blog_edit">
-				</form>
-			</fieldset>
-			<?php
-		} else {
-			?>
-			<fieldset>
-				<legend>Create a blog !</legend>
-				<form action="#" method="post">
-					<label for="name">Blog's name : </label><input type="text" name="name" id="name">
-					<label for="domain">Blog's domain : </label><input type="text" name="slug" id="slug">
-					<label for="description">Blog's description : </label><textarea name="description" id="description"></textarea>
-					<input type="submit" name="create_blog">
-				</form>
-			</fieldset>
-			<fieldset>
-				<legend>My blogs</legend>
-				<ul>
-					<?php foreach ($blogs as $blog) { ?>
-					<li><?= $blog['name']; ?> - 
-						<a href="?blog=edit&amp;token=<?= $_SESSION['token'] ?>&amp;id=<?= $blog['id'] ?>&amp;page=panel">edit</a> - 
-						<a href="?blog=delete&amp;token=<?= $_SESSION['token'] ?>&amp;id=<?= $blog['id'] ?>&amp;page=panel">delete</a> - 
-						<a href="?blog=post&amp;token=<?= $_SESSION['token'] ?>&amp;blog_id=<?= $blog['id'] ?>&amp;page=panel">posts</a>
-					</li>
-					<?php } ?>
-				</ul>
-			</fieldset>
-
-			<?php	
-		}
-		?>
-	</div>
-	<div id="user">
-		<?= (isset($user_error)) ? $user_error : ""; ?>
-		<fieldset>
-			<legend>Update your account</legend>
-			<form action="#" method="post">
-				firstname <input type="text" value="<?= $me['firstname']; ?>" name="firstname">
-				lastname <input type="text" value="<?= $me['lastname']; ?>" name="lastname">
-				name <input type="text" value="<?= $me['name']; ?>" name="name">
-				email <input type="text" value="<?= $me['email']; ?>" name="email">
-				<input type="submit" name="user_update">
-			</form>
-			<a href="?user=delete&amp;token=<?= $_SESSION['token'] ?>&amp;page=panel">Remove my account ? :(</a>
-		</fieldset>
-	</div>
-	<div id="posts">
-		<?php if (isset($posts)) { ?>
-		<fieldset>
-			<legend>My posts</legend>
-			<ul>
-				<?php foreach ($posts as $post) { ?>
-				<li><?php echo $post['title']; ?> - 
-					<a href="?post=edit&amp;post_id=<?php echo $post['id']; ?>&amp;token=<?php echo $_SESSION['token']; ?>&amp;page=panel">edit</a> - 
-					<a href="?post=delete&amp;post_id=<?php echo $post['id']; ?>&amp;token=<?php echo $_SESSION['token']; ?>&amp;page=panel">delete</a>
-				</li>
-				<?php } ?>
-			</ul>
-			<form action="#" method="post">
-				<p>Create new post :</p>
-				<input type="text" name="title">
-				<textarea name="content"></textarea>
-				<input type="submit" name="create_post">
-			</form>
-		</fieldset>
-		<?php } ?>
-
-		<?php if (isset($one)) { ?>
-		<fieldset>
-			<legend>Edit article</legend>
-			<?php echo (isset($post_error)) ? $post_error : ""; ?>
-			<form action="#" method="post">
-				<input type="text" name="title" value="<?php echo $one['title']; ?>"></input>
-				<textarea name="content"><?php echo $one['content']; ?></textarea>
-				<input type="submit" name="post_update">
-			</form>
-		</fieldset>
-		<?php } ?>
-	</div>
+	<div class="container">
+        <?php
+        if (isset($blog_error)) {
+            echo '<div class="alert alert-info display-error">' . $blog_error . '</div>';
+        }
+        if (isset($user_error)) {
+            echo '<div class="alert alert-info display-error">' . $user_error . '</div>';
+        }
+        ?>
+        <?php echo $menu; ?>
+        <h1 class="title">Welcome to your panel, <span id="user_name"><?php echo $_SESSION['name']; ?></span></h1>
+        <div class="jumbotron">
+         <h2 class="title">Update your Account</h2>
+         <div class="account">
+            <form action="#" method="POST">
+               <input type="hidden" name="name" value="<?php echo $_SESSION['name'];?>">
+               <div class="mui-textfield ">
+                  <input name="lastname" type="text" value="<?php echo $me['lastname']; ?>">
+                  <label>Last Name</label>
+              </div>
+              <div class="mui-textfield">
+                  <input name="firstname" type="text" value="<?php echo $me['firstname']; ?>">
+                  <label>First Name</label>
+              </div>
+              <div class="mui-textfield">
+                  <input name="email" type="email" value="<?php echo $me['email']; ?>">
+                  <label>Email<span id="span_label_email"></span></label>
+              </div>
+              <button type="submit" class="mui-btn" name="user_update" id="user_update">
+                  Update you Account 
+                  <span class="glyphicon glyphicon-ok"></span>
+              </button>
+          </form>
+          <form action="#" method="GET">
+           <input type="hidden" name="user" value="delete">
+           <input type="hidden" name="token" value="<?php echo $_SESSION['token'];?>">
+           <input type="hidden" name="page" value="panel">
+           <button type="submit" class="mui-btn">
+              Delete your Account ? 
+              <span class="glyphicon glyphicon-remove"></span>
+          </button>
+      </form>
+  </div>
+  <button class="mui-btn toggle_account">
+    Display your Account
+    <span class="glyphicon glyphicon-user"></span>
+</button>
+</div>
+<div class="jumbotron">
+ <h2 class="title">Here is the list of your blogs</h2>
+ <div class="blogs">
+    <?php foreach ($blogs as $blog) {
+       ?>
+       <div class="mui-panel">
+          <h3><?php echo $blog['name']; ?></h3>
+          <form action="#" method="GET">
+             <input type="hidden" name="blog" value="edit">
+             <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+             <input type="hidden" name="id" value="<?php echo $blog['id']; ?>">
+             <input type="hidden" name="page" value="panel">
+             <button type="submit" class="mui-btn crud_blog crud_blog_edit">
+                Edit
+                <span class="glyphicon glyphicon-pencil"></span>
+            </button>
+        </form>
+        <form action="#" method="GET">
+         <input type="hidden" name="blog" value="delete">
+         <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+         <input type="hidden" name="id" value="<?php echo $blog['id']; ?>">
+         <input type="hidden" name="page" value="panel">
+         <button type="submit" class="mui-btn crud_blog">
+            Remove
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </form>
+    <form action="#" method="GET">
+     <input type="hidden" name="post" value="create">
+     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+     <input type="hidden" name="id" value="<?php echo $blog['id']; ?>">
+     <input type="hidden" name="page" value="panel">
+     <button type="submit" class="mui-btn crud_blog">
+         Create a post on <?php echo $blog['name']; ?>
+         <span class="glyphicon glyphicon-plus"></span>
+     </button>
+ </form>
+ <form action="#" method="GET">
+     <input type="hidden" name="page" value="panel">
+     <input type="hidden" name="blog" value="post">
+     <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
+     <input type="hidden" name="blog_id" value="<?php echo $blog['id']; ?>">
+     <button type="submit" class="mui-btn crud_blog crud_blog_post">
+        This blog's posts
+        <span class="glyphicon glyphicon-list-alt"></span>
+    </button>
+</form>
+</div>
+<?php
+}
+?>
+</div>
+<button class="mui-btn toggle_blogs">
+    Display all your blogs
+    <span class="glyphicon glyphicon-folder-open"></span>
+</button>
+</div>
+<div class="jumbotron">
+ <h2 class="title">Create a Blog</h2>
+ <div class="create_blog">
+    <form action="#" method="POST">
+       <div class="mui-textfield">
+          <input name="name" type="text" id="blog_name">
+          <label>Blog's Name</label>
+      </div>
+      <div class="mui-textfield">
+          <input name="slug" type="text" id="blog_domain">
+          <label>Blog's Domain</label>
+      </div>
+      <span id="blog_slug">.blog-creator.prod</span>
+      <div class="mui-textfield">
+          <textarea name="description"></textarea>
+          <label>Blog's Description</label>
+      </div>
+      <button type="submit" name="create_blog" class="mui-btn">
+        Create
+        <span class="glyphicon glyphicon-plus"></span>
+    </button>
+</form>
+</div>
+<button type="submit" name="create_blog" class="mui-btn toggle_create_blog">
+    Display Create Blog
+    <span class="glyphicon glyphicon-plus"></span>
+</button>
+</div>
+</div>
 </body>
 </html>

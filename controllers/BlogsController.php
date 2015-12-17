@@ -24,24 +24,20 @@ class BlogsController extends Blog
 	public function render()
 	{
 
-		// Create blog
 		if (isset($_POST['create_blog'])) {
 			$this->create($_POST['name'], $_POST['slug'], $_POST['description']);
 		}
 
-		// Edit blog
 		if (isset($_POST['blog_edit'])) {
 			if ($_GET['token'] == $_SESSION['token']) {
 				$this->update($_POST['name'], $_POST['slug'], $_POST['description'], $_POST['id']);
 			}
 		}
-		// Delete blog
 		if (isset($_GET['blog']) && isset($_GET['id']) && isset($_GET['token']) && $_GET['blog'] == 'delete') {
 			if ($_GET['token'] == $_SESSION['token']) {
 				$this->delete($_GET['id']);
 			}
 		}
-		// Get post
 		if (isset($_GET['blog']) && $_GET['blog'] == 'post' && isset($_GET['id']) && isset($_GET['token'])) {
 			if ($_GET['token'] == $_SESSION['token']) {
 				$this->getArticles($_GET['id']);
