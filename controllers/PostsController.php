@@ -3,6 +3,7 @@ namespace controllers;
 
 use models\Post;
 use models\Database;
+use controllers\MediasController;
 class PostsController extends Post
 {
 	private $_posts;
@@ -57,8 +58,9 @@ class PostsController extends Post
 		}
 	}
 
-	public function create($id, $title, $content)
+	public function create($id, $title, $content, $urls = null)
 	{
+
 		$bdd = new Database('home');
 
 		$create = $bdd->getBdd()->prepare('INSERT INTO posts (title, content, blog_id, created_at, updated_at) VALUES (:title, :content, :blog_id, NOW(), NOW())');
@@ -66,6 +68,16 @@ class PostsController extends Post
 		$create->bindParam(':content', $content);
 		$create->bindParam(':blog_id', $id);
 		if ($create->execute()) {
+			if (!is_null($urls) && is_array($urls)) {
+				$select = $bdd->getBdd()->prepare('SELECT id FROM posts WHERE title = :title AND content = :content AND blog_id = :blog_id AND active = 1 ORDER BY id DESC LIMIT 1');
+				$select->bindParam(':title', $title);
+				$select->bindParam(':content', $content);
+				$select->bindParam(':blog_id', $id);
+				$select->execute();
+				$id = $select->fetch(\PDO::FETCH_ASSOC);
+				$medias = new MediasController();
+				$medias->create($urls, $id['id']);
+			}
 			$this->setError('Post successfully created');
 			return true;
 		}
@@ -125,12 +137,15 @@ class PostsController extends Post
 			if (empty($post)) {
 				$post = array('error' => 'post id invalid');
 			} else {
+				$medias = new MediasController();
+
 				$nb_comments = $bdd->getBdd()->prepare('SELECT COUNT(id) AS nb_comments FROM comments WHERE post_id = :post_id');
 				$nb_comments->bindParam(':post_id', $post['id'], \PDO::PARAM_INT);
 				$nb_comments->execute();
 
 				$nb_comments = $nb_comments->fetch(\PDO::FETCH_ASSOC);
 				$post['nb_comments'] = $nb_comments['nb_comments'];
+				$post['medias'] = $medias->getByPost($post['id']);
 			}
 			return json_encode($post);
 		}
