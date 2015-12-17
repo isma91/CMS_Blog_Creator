@@ -189,6 +189,22 @@ class UsersController extends User
 		return false;
 	}
 
+	public function getUserById ($id)
+	{
+		$bdd = new Database('home');
+
+		$getUser = $bdd->getBdd()->prepare('SELECT lastname, firstname, name, email FROM users WHERE id = :id');
+		$getUser->bindParam(':id', $id);
+		$getUser->execute();
+
+		$user = $getUser->fetch(\PDO::FETCH_ASSOC);
+		if ($user) {
+			return $user;
+		}
+
+		return false;
+	}
+
 	private function _updateToken($id)
 	{
 		$bdd = new Database('home');

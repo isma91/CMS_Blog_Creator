@@ -67,6 +67,9 @@ if (isset($_GET["page"])) {
 		include './views/home.php';
 		break;
 	}
+} elseif (isset($_GET["profile"])) {
+	include './views/menu.php';
+	include './views/profile.php';
 } else {
 	if (isset($_GET["blog"])) {
 		if (!isset($_GET["post"])) {
