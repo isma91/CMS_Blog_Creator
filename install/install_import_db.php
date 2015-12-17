@@ -22,6 +22,7 @@ try {
 		`url_banner` int(11) DEFAULT NULL,
 		`font_id` int(11) NOT NULL DEFAULT '1',
 		`user_id` int(11) NOT NULL,
+		`category_id` int(11) NOT NULL,
 		`created_at` datetime NOT NULL,
 		`updated_at` datetime DEFAULT NULL,
 		`active` int(11) NOT NULL DEFAULT '1',

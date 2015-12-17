@@ -16,16 +16,13 @@ $menu = '<nav class="navbar navbar-default">
 		' . $user . '
 	</ul>
 	<div class="col-sm-3 col-md-3 pull-right">
-		<form class="navbar-form">
-			<div class="input-group">
-				<input type="text" class="form-control" placeholder="Search" name="q">
-				<div class="input-group-btn">
-					<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-				</div>
+		<div class="input-group">
+			<div class="input-group-btn">
+				<button class="mui-btn mui-btn--small mui-btn--fab"><span class="glyphicon glyphicon-search"></span></button>
 			</div>
-		</form>
+		</div>
 	</div>        
-		' . $logout . '
+	' . $logout . '
 </div>
 </nav>';
 ?>

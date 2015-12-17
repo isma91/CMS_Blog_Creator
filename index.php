@@ -69,8 +69,13 @@ if (isset($_GET["page"])) {
 	}
 } else {
 	if (isset($_GET["blog"])) {
-		include './views/menu.php';
-		include './views/blog.php';
+		if (!isset($_GET["post"])) {
+			include './views/menu.php';
+			include './views/blog.php';
+		} else {
+			include './views/menu.php';
+			include './views/post.php';
+		}
 	} else {
 		include './views/menu.php';
 		include './views/home.php';

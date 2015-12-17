@@ -22,7 +22,7 @@ $(document).ready(function(){
 						data.articles[j].content = data.articles[j].content.substr(0, 150);
 						data.articles[j].content = data.articles[j].content + "...";
 					}
-					$("#" + data.articles[j].post_id).html('<div class="mui-panel"><h3 class="post_title">' + data.articles[j].title + '</h3></div><div class="mui-panel">' + data.articles[j].content + '</div><div class="mui-panel"><span class="floated_left">Créer le <i>' + data.articles[j].created_at + '</i></span><span class="floated_right">' + data.articles[j].nb_comments + ' Commentaire(s)</span></div></div>');
+					$("#" + data.articles[j].post_id).html('<div class="mui-panel"><a href="?blog=' + slug + '&post=' + data.articles[j].post_id + '"><h3 class="post_title">' + data.articles[j].title + '</h3></a></div><div class="mui-panel">' + data.articles[j].content + '</div><div class="mui-panel"><span class="floated_left">Créer le <i>' + data.articles[j].created_at + '</i></span><span class="floated_right">' + data.articles[j].nb_comments + ' Commentaire(s)</span></div></div>');
 				}
 			} else {
 				$("#blog_posts").html('<div class="jumbotron">No post in this blog yet !!</div>');

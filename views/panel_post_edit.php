@@ -17,6 +17,7 @@ $post->render();
 $post_error = $post->getError();
 $posts = $post->getPosts();
 $one = $post->getPost();
+var_dump($one);
 ?>
 <!DOCTYPE html>
 <html>
