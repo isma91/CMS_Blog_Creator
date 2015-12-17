@@ -29,7 +29,7 @@ if (isset($_GET['categories'])) {
 
 if (isset($_POST['title']) && isset($_POST['content']) && isset($_POST['post_id']) && isset($_POST['send']) && $_POST['send'] == 'comment') {
 	$o = new CommentsController();
-	echo $o->create($_POST['post_id'], $_POST['content'], $_POST['title']);
+	echo $o->create($_POST['post_id'], $_POST['content'], $_POST['title'], $_POST["note"]);
 }
 
 if (isset($_GET['connected'])) {
