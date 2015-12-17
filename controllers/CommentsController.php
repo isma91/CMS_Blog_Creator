@@ -57,4 +57,46 @@ class CommentsController extends Comment
 		$all = $get->fetchAll(\PDO::FETCH_ASSOC);
 		return json_encode($all);
 	}
+
+	public function setPlusComment ($comment_id)
+	{
+		$bdd = new Database('home');
+		$get_comment = $bdd->getBdd()->prepare('SELECT * FROM comments WHERE id = :id');
+		$get_comment->bindParam(':id', $comment_id, \PDO::PARAM_INT);
+		$get_comment->execute();
+		$comment = $get_comment->fetch(\PDO::FETCH_ASSOC);
+		if ($comment === false) {
+			$comment = array('error' => 'comment id invalid');
+			return json_encode($comment);
+		} else {
+			$current_comment_vote = $comment['vote'];
+			$new_vote = $current_comment_vote + 1;
+			$vote_plus = $bdd->getBdd()->prepare('UPDATE comments SET vote = ' . $new_vote . ' WHERE id = :id');
+			$vote_plus->bindParam(':id', $comment_id, \PDO::PARAM_INT);
+			$vote_plus->execute();
+			return true;
+		}
+	}
+
+	public function setMinusComment ($comment_id)
+	{
+		$bdd = new Database('home');
+		$get_comment = $bdd->getBdd()->prepare('SELECT * FROM comments WHERE id = :id');
+		$get_comment->bindParam(':id', $comment_id, \PDO::PARAM_INT);
+		$get_comment->execute();
+		$comment = $get_comment->fetch(\PDO::FETCH_ASSOC);
+		if ($comment === false) {
+			$comment = array('error' => 'comment id invalid');
+			return json_encode($comment);
+		} else {
+			$current_comment_vote = $comment['vote'];
+			var_dump($current_comment_vote);
+			$new_vote = $current_comment_vote - 1;
+			var_dump($new_vote);
+			$vote_minus = $bdd->getBdd()->prepare('UPDATE comments SET vote = ' . $new_vote . ' WHERE id = :id');
+			$vote_minus->bindParam(':id', $comment_id, \PDO::PARAM_INT);
+			$vote_minus->execute();
+			return true;
+		}
+	}
 }

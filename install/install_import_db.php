@@ -51,7 +51,7 @@ try {
 			`content` text NOT NULL,
 			`score` int(1) NOT NULL,
 			`active` int(1) NOT NULL DEFAULT '1',
-			`vote` varchar(11) NOT NULL,
+			`vote` varchar(11) NOT NULL DEFAULT '0',
 			PRIMARY KEY (`id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 		CREATE TABLE IF NOT EXISTS `mails` (

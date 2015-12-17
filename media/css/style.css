@@ -17,11 +17,13 @@ body {
   border-bottom-color: black;
 }
 .mui-textfield > input:focus,
-.mui-textfield > textarea:focus {
+.mui-textfield > textarea:focus,
+.mui-select > select:focus {
 	border-color: #000000;
 }
 .mui-textfield > input:focus ~ label,
 .mui-textfield > textarea:focus ~ label,
+.mui-select > select:focus ~ label,
 .masthead-brand {
 	color: #000000;
 }
@@ -29,17 +31,17 @@ div.form_sign_in,
 div.form_sign_up,
 .mui-textfield > input,
 .mui-textfield > textarea,
-.title {
+.title,
+h2.blog_name,
+h3.post_title,
+div.centre,
+div#post_add_comment {
 	text-align: center;
 }
 div.resume_last_six_blog {
 	width: 40%;
 	float: left;
 	margin: 5%;
-}
-h2.blog_name,
-h3.post_title {
-	text-align: center;
 }
 #logout {
 	float: right;
@@ -66,7 +68,10 @@ a.retour,
 div.display-error,
 button.button_post_update,
 div.update_post,
-div.create_post {
+div.create_post,
+div.jumbotron_profile,
+button#add_comment,
+div.post_comment {
 	width: 100%;
 	text-align: center;
 }

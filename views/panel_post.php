@@ -21,18 +21,18 @@ $one = $post->getPost();
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="description" content="blog description" />
-	<title>blog title</title>
-	<link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap.min.css" />
-	<link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap-theme.min.css" />
-	<link media="all" type="text/css" rel="stylesheet" href="media/css/mui.min.css" />
-	<link media="all" type="text/css" rel="stylesheet" href="media/css/style.css" />
-	<script src="media/js/jquery-2.1.4.min.js"></script>
-	<script src="media/js/panel.js"></script>
+  <meta charset="utf-8">
+  <meta name="description" content="blog description" />
+  <title>blog title</title>
+  <link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap.min.css" />
+  <link media="all" type="text/css" rel="stylesheet" href="media/css/bootstrap-theme.min.css" />
+  <link media="all" type="text/css" rel="stylesheet" href="media/css/mui.min.css" />
+  <link media="all" type="text/css" rel="stylesheet" href="media/css/style.css" />
+  <script src="media/js/jquery-2.1.4.min.js"></script>
+  <script src="media/js/panel.js"></script>
 </head>
 <body>
-	<div class="container">
+  <div class="container">
     <?php
     if (isset($blog_error)) {
       echo '<div class="alert alert-info display-error">' . $blog_error . '</div>';

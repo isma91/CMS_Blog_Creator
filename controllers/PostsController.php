@@ -161,6 +161,22 @@ class PostsController extends Post
 				$nb_comments->execute();
 
 				$nb_comments = $nb_comments->fetch(\PDO::FETCH_ASSOC);
+				$post['comments'] = array();
+				if ($nb_comments["nb_comments"] !== 0) {
+					$all_post_comments = $bdd->getBdd()->prepare('SELECT users.id AS "user_id", comments.id AS "comment_id", users.name AS "user_name", title, content, score, vote FROM comments LEFT JOIN users ON users.id = comments.user_id WHERE post_id = :post_id');
+					$all_post_comments->bindParam(':post_id', $post['id'], \PDO::PARAM_INT);
+					$all_post_comments->execute();
+					$all_post_comments = $all_post_comments->fetchAll();
+					foreach ($all_post_comments as $comment) {
+						$post['comments']['comment_id'][] = $comment['comment_id'];
+						$post['comments']['user_id'][] = $comment['user_id'];
+						$post['comments']['user_name'][] = $comment['user_name'];
+						$post['comments']['title'][] = $comment['title'];
+						$post['comments']['content'][] = $comment['content'];
+						$post['comments']['score'][] = $comment['score'];
+						$post['comments']['vote'][] = $comment['vote'];
+					}
+				}
 				$post['nb_comments'] = $nb_comments['nb_comments'];
 				$post['medias'] = $medias->getByPost($post['id']);
 			}

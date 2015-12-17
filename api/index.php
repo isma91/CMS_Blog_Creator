@@ -32,6 +32,16 @@ if (isset($_POST['title']) && isset($_POST['content']) && isset($_POST['post_id'
 	echo $o->create($_POST['post_id'], $_POST['content'], $_POST['title'], $_POST["note"]);
 }
 
+
+if (isset($_POST['vote']) && isset($_POST['comment_id']) && isset($_POST['send']) && $_POST['send'] == 'vote') {
+	$o = new CommentsController();
+	if ($_POST['vote'] === 'plus') {
+		echo $o->setPlusComment($_POST['comment_id']);
+	} elseif ($_POST['vote'] === 'minus') {
+		echo $o->setMinusComment($_POST['comment_id']);
+	}
+}
+
 if (isset($_GET['connected'])) {
 	$connected = UsersController::isConnected();
 	if ($connected) {

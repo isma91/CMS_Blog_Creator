@@ -9,11 +9,12 @@
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/mui.min.css" />
 	<link media="all" type="text/css" rel="stylesheet" href="media/css/style.css" />
   <script src="media/js/jquery-2.1.4.min.js"></script>
-	<script src="media/js/post.js"></script>
+  <script src="media/js/post.js"></script>
 </head>
 <body>
 	<div class="container">
     <?php echo $menu; ?>
+    <div class="display-error"></div>
     <h1 class="title"></h1>
     <div class="jumbotron">
       <a href="./?page=home" class="mui-btn retour">Back <span class="glyphicon glyphicon-share-alt"></span></a>
@@ -22,6 +23,7 @@
         <div class="mui-panel" id="post_content"></div>
         <div class="mui-panel" id="post_medias"></div>
         <div class="mui-panel" id="post_footer"></div>
+        <div class="mui-panel" id="post_add_comment"></div>
         <div class="mui-panel" id="post_comments"></div>
       </form>
     </div>
