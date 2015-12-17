@@ -5,17 +5,18 @@ use models\Comment;
 use models\Database;
 class CommentsController extends Comment
 {
-	public function create ($post_id, $content, $title)
+	public function create ($post_id, $content, $title, $score)
 	{
 		if (is_null($post_id)) {
 			return false;
 		}
 
 		$bdd = new Database('home');
-		$create = $bdd->getBdd()->prepare('INSERT INTO comments (user_id, post_id, title, content) VALUES (:user_id, :post_id, :title, :content)');
+		$create = $bdd->getBdd()->prepare('INSERT INTO comments (user_id, post_id, title, content, score) VALUES (:user_id, :post_id, :title, :content, :score)');
 		$create->bindParam(':post_id', $post_id);
 		$create->bindParam(':content', $content);
 		$create->bindParam(':title', $title);
+		$create->bindParam(':score', $score);
 		$create->bindParam(':user_id', $_SESSION['id']);
 		if ($create->execute()) {
 			return true;
