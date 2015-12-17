@@ -90,9 +90,7 @@ class CommentsController extends Comment
 			return json_encode($comment);
 		} else {
 			$current_comment_vote = $comment['vote'];
-			var_dump($current_comment_vote);
 			$new_vote = $current_comment_vote - 1;
-			var_dump($new_vote);
 			$vote_minus = $bdd->getBdd()->prepare('UPDATE comments SET vote = ' . $new_vote . ' WHERE id = :id');
 			$vote_minus->bindParam(':id', $comment_id, \PDO::PARAM_INT);
 			$vote_minus->execute();
