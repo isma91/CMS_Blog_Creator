@@ -31,6 +31,15 @@ if (isset($_POST['title']) && isset($_POST['content']) && isset($_POST['post_id'
 	echo $o->create($_POST['post_id'], $_POST['content'], $_POST['title']);
 }
 
+if (isset($_GET['connected'])) {
+	$connected = UsersController::isConnected();
+	if ($connected) {
+		echo json_encode(array('connected' => true));
+	} else {
+		echo json_encode(array('connected' => false));
+	}
+}
+
 if (isset($post)) {
 	echo $post;
 }
