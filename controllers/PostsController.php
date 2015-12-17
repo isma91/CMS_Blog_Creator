@@ -117,6 +117,23 @@ class PostsController extends Post
 		$read->execute();
 
 		$posts = $read->fetchAll(\PDO::FETCH_ASSOC);
+		if (empty($posts)) {
+			$post = array('error' => 'blog id invalid');
+		} else {
+			$i = 0;
+			foreach ($posts as $post) {
+				$medias = new MediasController();
+
+				$nb_comments = $bdd->getBdd()->prepare('SELECT COUNT(id) AS nb_comments FROM comments WHERE post_id = :post_id');
+				$nb_comments->bindParam(':post_id', $post['id'], \PDO::PARAM_INT);
+				$nb_comments->execute();
+
+				$nb_comments = $nb_comments->fetch(\PDO::FETCH_ASSOC);
+				$posts[$i]['nb_comments'] = $nb_comments['nb_comments'];
+				$posts[$i]['medias'] = $medias->getByPost($post['id']);
+				$i++;
+			}
+		}
 		$this->setPosts($posts);
 		return true;
 	}
