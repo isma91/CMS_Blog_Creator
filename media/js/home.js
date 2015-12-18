@@ -12,7 +12,7 @@ $(document).ready(function(){
 		$.get("models/get_last_blogs.php", function (data) {
 			$("div#last_six_blogs").html("");
 			data = JSON.parse(data);
-			if (data === null) {
+			if (data.length === 0) {
 				$("div#last_six_blogs").html('<div class="jumbotron"><h2 class="blog_name">No Blog yet !!</h2><div class="mui-panel"></div></div>');
 			} else {
 				for (i = 0; i < data.blog_id.length; i = i + 1) {
