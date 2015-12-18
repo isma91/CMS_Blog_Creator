@@ -14,7 +14,7 @@ $(document).ready(function(){
 	comment_get_post_comments = "";
 	images = "";
 	$("a.retour").attr("href", "?blog=" + slug);
-	setInterval(get_post_comments, 500);
+	setInterval(get_post_comments, 60000);
 	function get_post_comments() {
 		comment_get_post_comments = "";
 		$.getJSON('api/?post=' + post_id, function (data) {
