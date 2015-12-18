@@ -5,6 +5,7 @@ $bdd = new PDO('mysql:host=' . $config['databases'][$dbname]['host'] . ';dbname=
 $get_blog = $bdd->prepare('SELECT blogs.id AS "blog_id", blogs.name AS "blog_name", slug, user_id, users.name AS "username" FROM blogs INNER JOIN users ON blogs.user_id = users.id WHERE blogs.active = "1" ORDER BY blogs.created_at DESC LIMIT 6');
 $get_blog->execute();
 $blogs = $get_blog->fetchAll(\PDO::FETCH_ASSOC);
+$array_blogs = array();
 foreach ($blogs as $blog) {
 	$array_blogs["blog_id"][] = $blog["blog_id"];
 	$array_blogs["blog_name"][] = $blog["blog_name"];
