@@ -37,7 +37,6 @@ class PostsController extends Post
 			}
 		}
 
-
 		if (isset($_POST['token']) && isset($_POST['create_post']) && isset($_POST['blog_id'])) {
 			if ($_POST['token'] == $_SESSION['token']) {
 				if (isset($_POST['url'])) {
@@ -183,16 +182,8 @@ class PostsController extends Post
 						$post['comments']['vote'][] = $comment['vote'];
 					}
 				}
-				$post['medias'] = array();
-
-				$getMedias = $bdd->getBdd()->prepare('SELECT * FROM medias WHERE post_id = :post_id');
-				$getMedias->bindParam(':post_id', $id);
-				$getMedias->execute();
-
-				$medias = $getMedias->fetchAll(\PDO::FETCH_ASSOC);
-
 				$post['nb_comments'] = $nb_comments['nb_comments'];
-				$post['medias'] = $medias;
+				$post['medias'] = $medias->getByPost($post['id']);
 			}
 			return json_encode($post);
 		}

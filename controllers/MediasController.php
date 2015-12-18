@@ -29,7 +29,7 @@ class MediasController extends Media
 	{
 		$bdd = new Database('home');
 
-		$get = $bdd->getBdd()->prepare('SELECT * FROM medias WHERE post_id = :post_id');
+		$get = $bdd->getBdd()->prepare('SELECT * FROM media WHERE post_id = :post_id');
 		$get->bindParam(':post_id', $id);
 		$get->execute();
 
