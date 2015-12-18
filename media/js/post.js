@@ -12,30 +12,47 @@ $(document).ready(function(){
 	comments = '';
 	comment_get_post_comments = "";
 	$("a.retour").attr("href", "?blog=" + slug);
-	setInterval(get_post_comments, 60000);
+	setInterval(get_post_comments, 500);
 	function get_post_comments() {
+		comment_get_post_comments = "";
 		$.getJSON('api/?post=' + post_id, function (data) {
 			if (data.nb_comments === 0) {
 				$("div#post_comments").html('<p class="title">No comments yet</p>');
 			} else {
 				$.getJSON('api/?connected=user', function (data_user_connected) {
 					if (data_user_connected.connected === false) {
-						for (i = 0; i < data.comments.title.length; i = i + 1) {
-							comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : ' + data.comments.vote[i] + '</span></div></div>';
-						}
-					} else {
-						for (i = 0; i < data.comments.title.length; i = i + 1) {
-							comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : <span <span id="vote_' + data.comments.comment_id[i] + '">' + data.comments.vote[i] + '</span></span></div><div class="mui-panel">You can vote <a href="?profile=' + data.comments.user_id[i] + '">' + data.comments.user_name[i] + '</a>"s comment <button class="mui-btn mui-btn--small mui-btn--fab mui-btn--primary plus_comment" id="plus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-up"></span></button><button class="mui-btn mui-btn--small mui-btn--fab mui-btn--danger minus_comment" id="minus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-down"></span></button></div></div>';
+						if (data.comments.length === 0) {
+							comment_get_post_comments = '<p class="title">No comments yet</p>';
+						} else {
+							for (i = 0; i < data.comments.title.length; i = i + 1) {
+								comment_get_post_comments = comment_get_post_comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : ' + data.comments.vote[i] + '</span></div></div>';
+							}
 						}
 						$("div#post_comments").html("");
-						$("div#post_comments").html(comments);
+						$("div#post_comments").html(comment_get_post_comments);
+					} else {
+						if (data.comments.length === 0) {
+							comment_get_post_comments = '<p class="title">No comments yet</p>';
+						} else {
+							for (i = 0; i < data.comments.title.length; i = i + 1) {
+								comment_get_post_comments = comment_get_post_comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : <span <span id="vote_' + data.comments.comment_id[i] + '">' + data.comments.vote[i] + '</span></span></div><div class="mui-panel">You can vote <a href="?profile=' + data.comments.user_id[i] + '">' + data.comments.user_name[i] + '</a>"s comment <button class="mui-btn mui-btn--small mui-btn--fab mui-btn--primary plus_comment" id="plus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-up"></span></button><button class="mui-btn mui-btn--small mui-btn--fab mui-btn--danger minus_comment" id="minus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-down"></span></button></div></div>';
+							}
+						}
+						$("div#post_comments").html("");
+						$("div#post_comments").html(comment_get_post_comments);
 					}
 				});
 			}
 		});
 	}
 	$.getJSON('api/?post=' + post_id, function (data) {
-		console.log(data);
+		if (data.content.length > 100) {
+			data.content = data.content.substr(0, 97);
+			data.content = data.content + '...';
+		}
+		$('meta[name=description]').remove();
+		$('head').append( '<meta name="description" content="' + data.content + '">' );
+		document.title = data.title;
 		data.nb_comments = parseInt(data.nb_comments);
 		$("h2#post_title").html(data.title);
 		$("div#post_content").html('<p>' + data.content + '</p>');

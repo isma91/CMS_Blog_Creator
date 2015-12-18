@@ -7,6 +7,7 @@ $(document).ready(function(){
 	get_posts();
 	setInterval(get_posts, 30000);
 	function get_posts() {
+		document.getElementById('blog_posts').innerHTML = "";
 		slug = document.location.search.substr(6);
 		$.getJSON('api/?blog=' + slug, function (data) {
 			$('meta[name=description]').remove();
