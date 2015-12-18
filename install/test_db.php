@@ -31,7 +31,7 @@ try {
                 echo "Error !! The MySQL server denied acces to '" . $_POST["username"] . "', maybe you have write the wrong password ??\n";
             }
         } elseif ($exception->getCode() === 1049) {
-            echo "Error !! Database '" . $_POST["database_name"] . "' doesn't exist in the MySQL server '" . $host . "'\n";
+            echo "Error !! Database '" . $_POST["database_name"] . "' doesn't exist in the MySQL server '" . $_POST["host"] . "'\n";
         } else {    
             echo "Error !! " . $exception->getMessage();
         }
