@@ -2,15 +2,17 @@
 /*jslint devel : true*/
 /*global $, document, this*/
 $(document).ready(function(){
-	var get, array_get, slug, post_id, comment_title, comment_content, comment_select, error_add_comment, i, comments, plus_comment_id, minus_comment_id, j, comment_get_post_comments;
+	var get, array_get, slug, post_id, comment_title, comment_content, comment_select, error_add_comment, i, comments, plus_comment_id, minus_comment_id, j, comment_get_post_comments, k, images;
 	i = 0;
 	j = 0;
+	k = 0;
 	get = document.location.search.substr(1);
 	array_get = get.split('&');
 	slug = array_get[0].substr(5);
 	post_id = array_get[1].substr(5);
 	comments = '';
 	comment_get_post_comments = "";
+	images = "";
 	$("a.retour").attr("href", "?blog=" + slug);
 	setInterval(get_post_comments, 500);
 	function get_post_comments() {
@@ -46,6 +48,7 @@ $(document).ready(function(){
 		});
 	}
 	$.getJSON('api/?post=' + post_id, function (data) {
+		images = "";
 		if (data.content.length > 100) {
 			data.content = data.content.substr(0, 97);
 			data.content = data.content + '...';
@@ -59,7 +62,14 @@ $(document).ready(function(){
 		if (data.medias.length === 0) {
 			$("div#post_medias").html('<p class"title">No media in this post</p>');
 		} else {
-			$("div#post_medias").html();
+			for (k = 0; k < data.medias.length; k = k + 1) {
+				if (data.medias[k].type === "image") {
+					images = images + '<img src="' + data.medias[k].url + '" class="img-responsive img-thumbnail mui-image" alt="image">';
+				} else {
+					images = images + '<a href="' + data.medias[k].url + '">Image number ' + k + '</a>';
+				}
+			}
+			$("div#post_medias").html(images);
 		}
 		$("div#post_footer").html('<p class="floated_left">Created at <i>' + data.created_at + '</i></p><p class="floated_right">Update at <i>' + data.updated_at + '</i></p>');
 		if (data.nb_comments === 0) {

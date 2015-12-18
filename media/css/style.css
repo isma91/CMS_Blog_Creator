@@ -71,7 +71,8 @@ div.update_post,
 div.create_post,
 div.jumbotron_profile,
 button#add_comment,
-div.post_comment {
+div.post_comment,
+div#post_medias {
 	width: 100%;
 	text-align: center;
 }
@@ -80,4 +81,7 @@ div.blogs,
 div.create_blog {
 	text-align: center;
 	display: none;
+}
+img.mui-image {
+	width: 30%;
 }
