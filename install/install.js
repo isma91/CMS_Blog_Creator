@@ -163,6 +163,7 @@ $(document).ready(function(){
 				$("div#event").html('<div class="alert alert-success event-success">Your blog creator is ready to go !!</div>');
 				$("div#event").fadeIn('slow');
 				$("div.install").html("Done !!");
+				document.location.href = './../';
 			} else {
 				$("div.loader").css("display", "none");
 				$("div#event").css("display", "none");
