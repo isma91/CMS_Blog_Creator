@@ -15,14 +15,22 @@ $(document).ready(function(){
 	setInterval(get_post_comments, 60000);
 	function get_post_comments() {
 		$.getJSON('api/?post=' + post_id, function (data) {
-			data.nb_comments = parseInt(data.nb_comments);
 			if (data.nb_comments === 0) {
 				$("div#post_comments").html('<p class="title">No comments yet</p>');
 			} else {
-				for (j = 0; j < data.comments.title.length; j = j + 1) {
-					comment_get_post_comments = comment_get_post_comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[j] + '</h4><p>' + data.comments.content[j] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[j] + '</span><span class="floated_right">Comment"s note : ' + data.comments.vote[j] + '</span></div><div class="mui-panel">You can vote <a href="?profile=' + data.comments.user_id[j] + '">' + data.comments.user_name[j] + '</a>"s comment <button class="mui-btn mui-btn--small mui-btn--fab mui-btn--primary plus_comment" id="plus_' + data.comments.comment_id[j] + '"><span class="glyphicon glyphicon-thumbs-up"></span></button><button class="mui-btn mui-btn--small mui-btn--fab mui-btn--danger minus_comment" id="minus_' + data.comments.comment_id[j] + '"><span class="glyphicon glyphicon-thumbs-down"></span></button></div></div>';
-				}
-			$("div#post_comments").html(comment_get_post_comments);
+				$.getJSON('api/?connected=user', function (data_user_connected) {
+					if (data_user_connected.connected === false) {
+						for (i = 0; i < data.comments.title.length; i = i + 1) {
+							comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : ' + data.comments.vote[i] + '</span></div></div>';
+						}
+					} else {
+						for (i = 0; i < data.comments.title.length; i = i + 1) {
+							comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : <span <span id="vote_' + data.comments.comment_id[i] + '">' + data.comments.vote[i] + '</span></span></div><div class="mui-panel">You can vote <a href="?profile=' + data.comments.user_id[i] + '">' + data.comments.user_name[i] + '</a>"s comment <button class="mui-btn mui-btn--small mui-btn--fab mui-btn--primary plus_comment" id="plus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-up"></span></button><button class="mui-btn mui-btn--small mui-btn--fab mui-btn--danger minus_comment" id="minus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-down"></span></button></div></div>';
+						}
+						$("div#post_comments").html("");
+						$("div#post_comments").html(comments);
+					}
+				});
 			}
 		});
 	}
@@ -39,10 +47,18 @@ $(document).ready(function(){
 		if (data.nb_comments === 0) {
 			$("div#post_comments").html('<p class="title">No comments yet</p>');
 		} else {
-			for (i = 0; i < data.comments.title.length; i = i + 1) {
-				comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : ' + data.comments.vote[i] + '</span></div><div class="mui-panel">You can vote <a href="?profile=' + data.comments.user_id[i] + '">' + data.comments.user_name[i] + '</a>"s comment <button class="mui-btn mui-btn--small mui-btn--fab mui-btn--primary plus_comment" id="plus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-up"></span></button><button class="mui-btn mui-btn--small mui-btn--fab mui-btn--danger minus_comment" id="minus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-down"></span></button></div></div>';
-			}
-			$("div#post_comments").html(comments);
+			$.getJSON('api/?connected=user', function (data_user_connected) {
+				if (data_user_connected.connected === false) {
+					for (i = 0; i < data.comments.title.length; i = i + 1) {
+						comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : ' + data.comments.vote[i] + '</span></div></div>';
+					}
+				} else {
+					for (i = 0; i < data.comments.title.length; i = i + 1) {
+						comments = comments + '<div class="mui-panel post_comment"><h4 class="title">' + data.comments.title[i] + '</h4><p>' + data.comments.content[i] + '</p><div class="mui-panel"><span class="floated_left">Note : ' + data.comments.score[i] + '</span><span class="floated_right">Comment"s note : <span id="vote_' + data.comments.comment_id[i] + '">' + data.comments.vote[i] + '</span></span></div><div class="mui-panel">You can vote <a href="?profile=' + data.comments.user_id[i] + '">' + data.comments.user_name[i] + '</a>"s comment <button class="mui-btn mui-btn--small mui-btn--fab mui-btn--primary plus_comment" id="plus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-up"></span></button><button class="mui-btn mui-btn--small mui-btn--fab mui-btn--danger minus_comment" id="minus_' + data.comments.comment_id[i] + '"><span class="glyphicon glyphicon-thumbs-down"></span></button></div></div>';
+					}
+				}
+				$("div#post_comments").html(comments);
+			});
 		}
 		$.getJSON('api/?connected=user', function (data_user) {
 			if (data_user.connected === false) {
@@ -93,7 +109,7 @@ $(document).ready(function(){
 					$.post('api/', {vote: "plus", comment_id: plus_comment_id, send: "vote"}, function (data, textStatus, xhr) {
 						if (textStatus === "success") {
 							$("div.display-error").html('<div class="alert alert-info display-error">Your vote was added with success</div>');
-							get_post_comments();
+							$("span#vote_" + plus_comment_id).html(parseInt($("span#vote_" + plus_comment_id).html()) + 1);
 						} else {
 							$("div.display-error").html('<div class="alert alert-info display-error">Something happened, your vote can"t be added</div>');
 						}
@@ -104,7 +120,7 @@ $(document).ready(function(){
 					$.post('api/', {vote: "minus", comment_id: minus_comment_id, send: "vote"}, function (data, textStatus, xhr) {
 						if (textStatus === "success") {
 							$("div.display-error").html('<div class="alert alert-info display-error">Your vote was added with success</div>');
-							get_post_comments();
+							$("span#vote_" + minus_comment_id).html(parseInt($("span#vote_" + minus_comment_id).html()) - 1);
 						} else {
 							$("div.display-error").html('<div class="alert alert-info display-error">Something happened, your vote can"t be added</div>');
 						}
