@@ -35,6 +35,7 @@ $(document).ready(function(){
 		});
 	}
 	$.getJSON('api/?post=' + post_id, function (data) {
+		console.log(data);
 		data.nb_comments = parseInt(data.nb_comments);
 		$("h2#post_title").html(data.title);
 		$("div#post_content").html('<p>' + data.content + '</p>');

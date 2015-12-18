@@ -54,6 +54,10 @@ $one = $post->getPost();
           <textarea name="content"></textarea>
           <label>Post content</label>
         </div>
+        <div class="mui-textfield ">
+          <input type="url" name="url">
+          <label>Url Media (set , between each url)</label>
+        </div>
         <input type="hidden" name="page" value="panel">
         <input type="hidden" name="blog_id" value="<?php echo $_GET['id']; ?>">
         <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
