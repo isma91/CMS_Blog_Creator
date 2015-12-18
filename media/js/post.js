@@ -42,6 +42,28 @@ $(document).ready(function(){
 						}
 						$("div#post_comments").html("");
 						$("div#post_comments").html(comment_get_post_comments);
+						$("button.plus_comment").click(function() {
+						plus_comment_id = this.id.substr(5);
+						$.post('api/', {vote: "plus", comment_id: plus_comment_id, send: "vote"}, function (data, textStatus, xhr) {
+							if (textStatus === "success") {
+								$("div.display-error").html('<div class="alert alert-info display-error">Your vote was added with success</div>');
+								$("span#vote_" + plus_comment_id).html(parseInt($("span#vote_" + plus_comment_id).html()) + 1);
+							} else {
+								$("div.display-error").html('<div class="alert alert-info display-error">Something happened, your vote can"t be added</div>');
+							}
+						});
+					});
+					$("button.minus_comment").click(function() {
+						minus_comment_id = this.id.substr(6);
+						$.post('api/', {vote: "minus", comment_id: minus_comment_id, send: "vote"}, function (data, textStatus, xhr) {
+							if (textStatus === "success") {
+								$("div.display-error").html('<div class="alert alert-info display-error">Your vote was added with success</div>');
+								$("span#vote_" + minus_comment_id).html(parseInt($("span#vote_" + minus_comment_id).html()) - 1);
+							} else {
+								$("div.display-error").html('<div class="alert alert-info display-error">Something happened, your vote can"t be added</div>');
+							}
+						});
+					});
 					}
 				});
 			}
