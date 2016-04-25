@@ -11,7 +11,7 @@
 * @category Model
 * @package  Model
 * @author   isma91 <ismaydogmus@gmail.com>
-* @author   Raph <rbleuzet@gmail.com>
+* @author   Raph <rbleuzet@epitech.eu>
 * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
 */
 return [
